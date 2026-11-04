@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # KejaLink: Property Listing and Viewing Management System
 
 **React + Node.js/Express + Supabase (PostgreSQL)**. A rebuild of the PHP version with the same purpose and features.
@@ -108,3 +109,6 @@ With the backend serving a fresh build and fresh demo data:
 npm i -g playwright && npx playwright install chromium
 node tests/e2e.test.js
 ```
+=======
+# KejaLink
+>>>>>>> 094c70af337da107725486d8d3ded15cd27ee74a
