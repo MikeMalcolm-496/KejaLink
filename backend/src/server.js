@@ -1,13 +1,4 @@
-/**
- * server.js: starts the KejaLink API.
- *
- * Request pipeline (top to bottom):
- *   security headers -> JSON body -> cookies -> who is logged in (loadUser)
- *   -> CSRF guard -> route -> error handler
- *
- * In production it also serves the built React app (frontend/dist), so the
- * whole system runs from one address.
- */
+/** server.js: starts the KejaLink API and serves the built React app in production. */
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
@@ -20,7 +11,7 @@ const { notFound, errorHandler, asyncHandler } = require('./middleware/errors');
 const { UPLOAD_DIR } = require('./utils/storage');
 
 const app = express();
-app.set('trust proxy', 1);              // correct client IP behind a hosting proxy (for audit logs)
+app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
 app.use(securityHeaders);
@@ -41,24 +32,25 @@ app.use('/api/reports', require('./routes/reports'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api', notFound);
 
-// Photos saved on this server (when Supabase Storage is not configured)
 app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '7d', fallthrough: false }));
 
-// The built React app (npm run build in /frontend). Any other path returns index.html
-// so React Router can show the right page.
 const dist = path.join(__dirname, '..', '..', 'frontend', 'dist');
-if (fs.existsSync(dist)) {
+const hasFrontend = fs.existsSync(path.join(dist, 'index.html'));
+if (hasFrontend) {
   app.use(express.static(dist, { maxAge: '1h', index: false }));
-  app.get('*', (req, res) => res.sendFile(path.join(dist, 'index.html')));
+  app.use((req, res, next) =>
+    req.method === 'GET' ? res.sendFile(path.join(dist, 'index.html')) : next());
 }
 
 app.use(errorHandler);
 
-app.listen(config.port, () => {
-  console.log(`KejaLink API running on http://localhost:${config.port}`);
+const port = process.env.PORT || config.port;
+app.listen(port, '0.0.0.0', () => {
+  console.log(`KejaLink running on port ${port}`);
+  console.log(hasFrontend ? 'Frontend: serving frontend/dist' : `Frontend NOT FOUND at ${dist}`);
   pool.query('select count(*) from users')
     .then((r) => console.log(`Database connected (${r.rows[0].count} users).`))
-    .catch((err) => console.error('DATABASE CONNECTION FAILED:', err.message, '\nCheck DATABASE_URL in backend/.env'));
+    .catch((err) => console.error('DATABASE CONNECTION FAILED:', err.message));
 });
 
 module.exports = app;
