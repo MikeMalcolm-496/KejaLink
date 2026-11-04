@@ -1,0 +1,9 @@
+node_modules/
+.env
+frontend/dist/
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/storage/mail/*
+backend/storage/logs/*
+!backend/storage/**/.gitkeep
+tests/screenshots/

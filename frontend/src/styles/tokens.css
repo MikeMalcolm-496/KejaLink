@@ -1,0 +1,61 @@
+/* =====================================================================
+   KejaLink design tokens: every colour, size and shadow used in the app.
+   Change a value here and it changes everywhere.
+   ===================================================================== */
+:root {
+  /* Brand */
+  --emerald: #0e5a47;          /* primary: buttons, links, active states */
+  --emerald-dark: #0a4637;
+  --emerald-deep: #0b2f27;     /* hero and admin sidebar */
+  --mint: #dcefe6;             /* tinted backgrounds */
+  --mint-soft: #eff7f3;
+  --amber: #f0a23a;            /* accent: "Nairobi sunset" highlights, featured */
+  --amber-soft: #fdf0dc;
+  --amber-ink: #7a4706;
+
+  /* Neutrals */
+  --ink: #13201b;              /* main text */
+  --ink-2: #3a4540;
+  --muted: #5c655f;            /* secondary text (passes 4.5:1 on paper) */
+  --paper: #f6f5f0;            /* page background */
+  --surface: #ffffff;
+  --surface-2: #f1f0ea;
+  --line: #e2e0d8;
+  --line-strong: #cfccc1;
+
+  /* Status */
+  --danger: #b0362a;
+  --danger-soft: #f8e3df;
+  --info: #285b8c;
+  --info-soft: #e1ebf6;
+  --warn-soft: #fbefd6;
+  --warn-ink: #7f4b05;
+
+  /* Type */
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
+
+  /* Space (4 px scale) */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px; --s12: 48px; --s16: 64px;
+
+  /* Shape and depth */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(19, 32, 27, 0.06);
+  --shadow: 0 6px 24px -8px rgba(19, 32, 27, 0.16);
+  --shadow-lg: 0 24px 48px -16px rgba(19, 32, 27, 0.28);
+  --focus: 0 0 0 3px rgba(14, 90, 71, 0.28);
+
+  --header-h: 68px;
+  --sidebar-w: 256px;
+  --max-w: 1200px;
+}
