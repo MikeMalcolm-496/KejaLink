@@ -25,7 +25,7 @@ const STATUS_OPTIONS = {
   users: ['active', 'suspended'],
 };
 const TITLES = {
-  listings: 'Listings report', viewings: 'Viewings report', inquiries: 'Inquiries report', payments: 'M-Pesa payments report',
+  listings: 'Listings report', viewings: 'Viewings report', inquiries: 'Inquiries report', payments: 'Payments report',
   users: 'User registrations report', agents: 'Agent performance report', audit: 'Activity log report',
 };
 const label = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, ' ') : s);
@@ -93,9 +93,10 @@ async function buildReport(f, agentId) {
       if (f.status) where.push(`pm.payment_status = ${p(f.status)}`);
       sorts = { date: ['pm.created_at', 'Date'], amount: ['pm.amount', 'Amount'], status: ['pm.payment_status', 'Status'] };
       sql = `select pm.payment_id id, to_char(pm.created_at, 'DD Mon YYYY HH24:MI') paid, a.full_name agent, coalesce(p.title, 'Deleted listing') property,
-               pm.phone, pm.feature_days days, pm.amount, coalesce(pm.mpesa_receipt, '-') receipt, pm.payment_status status
+               case when pm.payment_method = 'manual' then 'Manual' else 'Legacy' end method,
+               pm.feature_days days, pm.amount, coalesce(pm.payment_reference, '-') reference, pm.payment_status status
              from payments pm join users a on a.user_id = pm.agent_id left join properties p on p.property_id = pm.property_id where {WHERE}`;
-      columns = { id: 'ID', paid: 'Date', agent: 'Agent', property: 'Listing', phone: 'Phone', days: 'Days', amount: 'Amount (KES)', receipt: 'M-Pesa receipt', status: 'Status' };
+      columns = { id: 'ID', paid: 'Date', agent: 'Agent', property: 'Listing', method: 'Method', days: 'Days', amount: 'Amount (KES)', reference: 'Reference', status: 'Status' };
       break;
     case 'users':
       range('u.created_at');

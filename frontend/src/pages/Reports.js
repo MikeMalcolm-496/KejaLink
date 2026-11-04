@@ -12,7 +12,7 @@ import useTitle from '../hooks/useTitle';
 import { label, nairobiDate, roleLabel } from '../utils/format';
 
 const TYPES = {
-  listings: 'Listings by status', viewings: 'Viewings (bookings)', inquiries: 'Inquiries & response times', payments: 'M-Pesa payments',
+  listings: 'Listings by status', viewings: 'Viewings (bookings)', inquiries: 'Inquiries & response times', payments: 'Payments',
   users: 'User registrations', agents: 'Agent performance', audit: 'Activity log (audit trail)',
 };
 const AGENT_TYPES = ['listings', 'viewings', 'inquiries', 'payments'];

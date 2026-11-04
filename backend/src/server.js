@@ -18,7 +18,6 @@ const { securityHeaders, csrfGuard } = require('./middleware/security');
 const { loadUser } = require('./middleware/auth');
 const { notFound, errorHandler, asyncHandler } = require('./middleware/errors');
 const { UPLOAD_DIR } = require('./utils/storage');
-const payments = require('./controllers/paymentController');
 
 const app = express();
 app.set('trust proxy', 1);              // correct client IP behind a hosting proxy (for audit logs)
@@ -27,9 +26,6 @@ app.disable('x-powered-by');
 app.use(securityHeaders);
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
-
-// Safaricom calls this directly, so it is registered before login and CSRF checks.
-app.post('/api/payments/mpesa-callback', asyncHandler(payments.callback));
 
 app.use('/api', loadUser, csrfGuard);
 app.get('/api/health', asyncHandler(async (req, res) => {

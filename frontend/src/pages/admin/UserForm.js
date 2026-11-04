@@ -44,7 +44,7 @@ export default function UserForm() {
   return (
     <>
       <nav className="small muted mb-4"><Link to="/admin/users">Users</Link> / {id ? 'Edit' : 'Register'}</nav>
-      <div className="page-head"><div><h1>{id ? `Edit ${form.values.full_name}` : 'Register a user'}</h1><p>{id ? 'Update contact details. Use the Users list to reset passwords or suspend.' : 'The user gets a temporary password by e-mail and must change it at first login.'}</p></div></div>
+      <div className="page-head"><div><h1>{id ? `Edit ${form.values.full_name}` : 'Register a user'}</h1><p>{id ? 'Update contact details. Use the Users list to reset passwords or suspend.' : 'A temporary password is shown once after creation and must be changed at first login.'}</p></div></div>
       <form className="card" style={{ maxWidth: 760 }} onSubmit={submit} noValidate>
         {form.message && <Alert type="error">{form.message}</Alert>}
         <div className="form-grid">
@@ -64,7 +64,7 @@ export default function UserForm() {
         <Modal title="Account created" onClose={() => navigate('/admin/users')} footer={<button className="btn btn-primary" onClick={() => navigate('/admin/users')}>Done</button>}>
           <p>{created.message}</p>
           <Alert type="success">Temporary password: <b className="temp-password">{created.tempPassword}</b></Alert>
-          <p className="small muted mb-0">It was also e-mailed. The user must change it at first login.</p>
+          <p className="small muted mb-0">Share this password securely. The user must change it at first login.</p>
         </Modal>
       )}
     </>

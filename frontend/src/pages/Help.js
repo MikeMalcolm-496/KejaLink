@@ -22,21 +22,20 @@ const SECTIONS = [
   ]],
   ['inquiries', 'Asking an agent a question', 'message', ['On a listing, write at least 10 characters under Ask the agent and click Send inquiry. Replies appear on the listing, under My inquiries, and as a notification.']],
   ['agent', 'Agent portal: overview', 'id', [
-    'After registering, your account shows "Awaiting verification" until an admin checks your licence. You are notified and e-mailed when approved.',
+    'After registering, your account shows "Awaiting verification" until an admin checks your licence. You receive an in-app notification when approved.',
     'The dashboard shows active listings, open inquiries, viewings awaiting your reply and this week\'s viewings. Orange numbers in the menu show items waiting for you.',
   ]],
   ['agent-listings', 'Agent: managing listings', 'building', [
     ['Click Add new listing and fill in the title, type, price (digits only), bedrooms, bathrooms and location ("Area, Town").', 'Drop 1 to 10 photos (JPG, PNG or WebP, max 3 MB each) on the photo box. When editing, choose the cover photo or tick photos to delete.', 'Click Publish listing. It appears in search immediately.', 'Change the status from the drop-down in My listings. Sold or Rented cancels upcoming viewings and tells the clients.', 'Delete removes the listing with its photos, viewings and inquiries, after you confirm.'],
   ]],
   ['agent-viewings', 'Agent: viewing requests', 'calendar', [['Confirm accepts the time.', 'Reschedule lets you pick a new date and time and add a note.', 'Decline needs a short reason, which is sent to the client.', 'Mark completed appears once the viewing time has passed.']]],
-  ['agent-mpesa', 'Agent: featuring with M-Pesa', 'mobile', [
-    ['Open Featuring & M-Pesa, or click the star next to a listing.', 'Choose the listing and a package (7 or 30 days), and check the Safaricom number that will pay.', 'Click Pay with M-Pesa and enter your PIN in the prompt on your phone.', 'The page updates by itself when payment is confirmed; the listing gets a Featured badge at the top of search.'],
-    'If you cancel the prompt or have too little balance, the payment shows as Cancelled or Failed and no money is taken.',
+  ['agent-payments', 'Agent: manual listing payments', 'card', [
+    ['Open Payments, or click the star next to a listing.', 'Choose the listing and a package (7 or 30 days), then submit your payment reference.', 'The request stays pending until an administrator checks it. Once approved, the listing receives a Featured badge at the top of search.'],
   ]],
   ['admin', 'Admin panel: overview', 'gauge', ['The overview shows totals, agents awaiting verification (orange border), a moderation search, a report shortcut, charts of viewings and listings, and the latest activity.']],
   ['admin-agents', 'Admin: verifying agents', 'id', ['Open Agent verification. Check each licence number with the Estate Agents Registration Board, then Approve, or Reject with a reason. Approved agents can be revoked later from the Approved tab.']],
   ['admin-users', 'Admin: managing users', 'users', [
-    ['Register user creates an account with a temporary password (shown once and e-mailed) that must be changed at first login.', 'The key button resets a password, e.g. for a locked-out user.', '2FA off helps a user who lost their phone. Confirm their identity first.', 'Suspend blocks login and needs a reason; Reinstate restores access.', 'The bin button deletes the account and its data, after confirmation.', 'Only super admins can manage administrators, under Administrators.'],
+    ['Register user creates an account with a temporary password shown once; share it securely. It must be changed at first login.', 'The key button resets a password and shows the temporary password once.', '2FA off helps a user who lost their phone. Confirm their identity first.', 'Suspend blocks login and needs a reason; Reinstate restores access.', 'The bin button deletes the account and its data, after confirmation.', 'Only super admins can manage administrators, under Administrators.'],
   ]],
   ['admin-listings', 'Admin: moderating listings', 'flag', ['Tick Reported only to see listings clients flagged; each reason shows under the title. Remove hides a listing, cancels its viewings and tells the agent why. Restore reverses it. Dismiss closes a report without action.']],
   ['admin-audit', 'Admin: activity log', 'history', ['Every important action (logins, failed logins, listing changes, bookings, payments, admin decisions) is recorded with the user, time, record and IP address. Filter it, and use Export as report for a PDF.']],
@@ -46,7 +45,7 @@ const SECTIONS = [
   ]],
   ['account', 'Your profile', 'user', ['Open the menu under your name, then Profile, to update your name, email and phone. Agents can also edit their agency name and a short bio shown to clients.']],
   ['security', 'Passwords, 2FA and account safety', 'shield', [
-    ['Passwords need 8+ characters with upper-case, lower-case and a number. They are stored as one-way hashes, so nobody can read them.', 'Forgot password? sends a link that works once and expires after 30 minutes.', 'After 5 wrong passwords the account locks for 15 minutes.', 'You are logged out after 30 minutes without activity.', 'Two-factor authentication: menu, then Password & 2FA. Scan the QR code with Google Authenticator and enter the code. From then on each login also asks for a code from your phone.'],
+    ['Passwords need 8+ characters with upper-case, lower-case and a number. They are stored as one-way hashes, so nobody can read them.', 'If you forget your password, contact an administrator to reset it. Temporary passwords must be changed at first login.', 'After 5 wrong passwords the account locks for 15 minutes.', 'You are logged out after 30 minutes without activity.', 'Two-factor authentication: menu, then Password & 2FA. Scan the QR code with Google Authenticator and enter the code. From then on each login also asks for a code from your phone.'],
   ]],
 ];
 
@@ -55,7 +54,7 @@ const FAQ = [
   ['Why is there no "Book a viewing" button?', 'You need a client account, and the property must be Available. Properties under offer, sold or rented take no new viewings.'],
   ['Why was my time slot rejected?', 'Viewings run Monday to Saturday, 09:00 to 16:00, from tomorrow up to 30 days ahead. Someone may also have just taken it; pick another.'],
   ['I registered as an agent but cannot add listings.', 'An admin must verify your licence first. If it was rejected, the reason shows on your dashboard.'],
-  ['My account is locked.', 'Wait 15 minutes or use Forgot password?. An admin can also reset your password.'],
+  ['My account is locked.', 'Wait 15 minutes or contact an administrator to reset your password.'],
   ['I lost the phone with my authenticator app.', 'Contact an administrator; after confirming your identity they can turn off 2FA.'],
   ['How do I report a fake listing?', 'Open it and click "Report this listing" at the bottom of the right-hand column.'],
 ];

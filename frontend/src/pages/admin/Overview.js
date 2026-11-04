@@ -83,7 +83,7 @@ export default function Overview() {
           <div className="field"><label htmlFor="rtype">Report type</label>
             <select id="rtype" className="select" value={rep.type} onChange={(e) => setRep({ ...rep, type: e.target.value })}>
               <option value="listings">Listings by status</option><option value="viewings">Viewings</option><option value="users">User registrations</option>
-              <option value="agents">Agent performance</option><option value="payments">M-Pesa payments</option><option value="audit">Activity log</option></select></div>
+              <option value="agents">Agent performance</option><option value="payments">Payments</option><option value="audit">Activity log</option></select></div>
           <div className="form-grid">
             <div className="field"><label htmlFor="rfrom">From</label><input id="rfrom" type="date" className="input" value={rep.from} onChange={(e) => setRep({ ...rep, from: e.target.value })} /></div>
             <div className="field"><label htmlFor="rto">To</label><input id="rto" type="date" className="input" value={rep.to} onChange={(e) => setRep({ ...rep, to: e.target.value })} /></div>

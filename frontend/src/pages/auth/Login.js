@@ -55,7 +55,7 @@ export default function Login() {
         <Field label="Password" name="password" error={form.errors.password}><PasswordInput form={form} name="password" /></Field>
         <div className="row-between mb-4">
           <span className="xsmall muted">Locked for 15 minutes after 5 wrong tries</span>
-          <Link to="/forgot-password" className="small">Forgot password?</Link>
+          <span className="small muted">Contact an administrator if you need help accessing your account.</span>
         </div>
         <SubmitButton busy={form.submitting} className="btn btn-primary btn-block" busyText="Checking…">Log in</SubmitButton>
       </form>

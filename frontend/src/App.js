@@ -21,8 +21,6 @@ import NotFound from './pages/NotFound';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import TwoFactor from './pages/auth/TwoFactor';
-import ForgotPassword from './pages/auth/ForgotPassword';
-import ResetPassword from './pages/auth/ResetPassword';
 import ChangePassword from './pages/auth/ChangePassword';
 import Saved from './pages/client/Saved';
 import MyViewings from './pages/client/MyViewings';
@@ -65,8 +63,6 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/two-factor" element={<TwoFactor />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/change-password" element={<RequireAuth><ChangePassword /></RequireAuth>} />
                 <Route path="/client/saved" element={<RequireAuth roles={['client']}><Saved /></RequireAuth>} />
                 <Route path="/client/viewings" element={<RequireAuth roles={['client']}><MyViewings /></RequireAuth>} />

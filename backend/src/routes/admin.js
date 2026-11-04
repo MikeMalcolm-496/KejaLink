@@ -15,6 +15,7 @@ router.put('/users/:id', h(c.saveUser));
 router.get('/listings', h(c.listings));
 router.get('/viewings', h(c.allViewings));
 router.get('/payments', h(c.payments));
+router.patch('/payments/:id', h(c.reviewPayment));
 router.get('/audit', h(c.auditLog));
 router.get('/admins', requireLogin('super_admin'), h(c.admins));
 router.post('/actions/:action', h(c.action));

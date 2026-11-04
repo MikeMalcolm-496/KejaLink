@@ -6,7 +6,7 @@
 -- =====================================================================
 begin;
 
-truncate table listing_reports, notifications, payments, password_resets, audit_logs, admin_actions,
+truncate table listing_reports, notifications, payments, audit_logs, admin_actions,
     viewings, inquiries, favourites, property_images, properties, agent_profiles, users restart identity cascade;
 
 INSERT INTO users (user_id, full_name, email, phone, password_hash, role, account_status, created_at, last_login_at) VALUES
@@ -169,14 +169,14 @@ INSERT INTO admin_actions (admin_id, action_type, target_user_id, target_propert
 (2, 'reject_agent', 8, NULL, 'Licence number not found in the EARB register.', now() - interval '18 days'),
 (2, 'suspend_user', 12, NULL, 'Repeated abusive messages to agents', now() - interval '30 days');
 
-INSERT INTO payments (agent_id, property_id, phone, amount, feature_days, merchant_request_id, checkout_request_id, mpesa_receipt, payment_status, result_desc, created_at) VALUES
-(3, 1, '254722410417', 500, 7, 'SIM-a1', 'ws_CO_SIMseed0001', 'SJK4H7Q2LM', 'success', 'The service request is processed successfully.', now() - interval '1 days'),
-(3, 11, '254722410417', 1500, 30, 'SIM-a2', 'ws_CO_SIMseed0002', 'SJA9B3X1PQ', 'success', 'The service request is processed successfully.', now() - interval '10 days'),
-(4, 3, '254733190233', 500, 7, 'SIM-a3', 'ws_CO_SIMseed0003', NULL, 'cancelled', 'Request cancelled by user', now() - interval '4 days'),
-(4, 9, '254733190233', 1500, 30, 'SIM-a4', 'ws_CO_SIMseed0004', 'SH72KD9W0E', 'success', 'The service request is processed successfully.', now() - interval '70 days');
+INSERT INTO payments (agent_id, property_id, payment_method, payment_reference, amount, feature_days, payment_status, result_desc, created_at) VALUES
+(3, 1, 'manual', 'DEMO-PAY-001', 500, 7, 'success', 'Payment confirmed by an administrator.', now() - interval '1 days'),
+(3, 11, 'manual', 'DEMO-PAY-002', 1500, 30, 'success', 'Payment confirmed by an administrator.', now() - interval '10 days'),
+(4, 3, 'manual', 'DEMO-PAY-003', 500, 7, 'failed', 'Payment could not be confirmed.', now() - interval '4 days'),
+(4, 9, 'manual', 'DEMO-PAY-004', 1500, 30, 'success', 'Payment confirmed by an administrator.', now() - interval '70 days');
 
 INSERT INTO listing_reports (property_id, reporter_id, reason, report_status, created_at) VALUES
-(12, 13, 'The agent asked me to pay a KES 2,000 viewing fee by M-Pesa before showing the shop.', 'open', now() - interval '1 days');
+(12, 13, 'The agent asked me to pay a KES 2,000 viewing fee before showing the shop.', 'open', now() - interval '1 days');
 
 INSERT INTO notifications (user_id, message, link, is_read, created_at) VALUES
 (3, 'New viewing request: 2-bedroom apartment with balcony', '/agent/viewings', false, now() - interval '0 hours'),
@@ -195,7 +195,7 @@ INSERT INTO audit_logs (user_id, action, entity_type, entity_id, details, ip_add
 (9, 'viewing_booked', 'viewing', 1, '2-bedroom apartment with balcony', '41.80.12.200', 'Mozilla/5.0 (seed data)', now() - interval '2 days'),
 (3, 'login_success', 'user', 3, NULL, '105.163.2.44', 'Mozilla/5.0 (seed data)', now() - interval '2 days'),
 (3, 'listing_updated', 'property', 1, '2-bedroom apartment with balcony', '105.163.2.44', 'Mozilla/5.0 (seed data)', now() - interval '2 days'),
-(3, 'payment_success', 'payment', 1, 'KES 500 to feature listing for 7 days. Receipt SJK4H7Q2LM', '105.163.2.44', 'Mozilla/5.0 (seed data)', now() - interval '1 days'),
+(3, 'payment_approved', 'payment', 1, 'KES 500 to feature listing for 7 days. Reference DEMO-PAY-001', '105.163.2.44', 'Mozilla/5.0 (seed data)', now() - interval '1 days'),
 (2, 'login_success', 'user', 2, NULL, '197.232.1.9', 'Mozilla/5.0 (seed data)', now() - interval '1 days'),
 (2, 'suspend_user', 'user', 12, 'Repeated abusive messages to agents', '197.232.1.9', 'Mozilla/5.0 (seed data)', now() - interval '30 days'),
 (13, 'listing_reported', 'property', 12, 'The agent asked me to pay a viewing fee', '41.89.10.77', 'Mozilla/5.0 (seed data)', now() - interval '1 days'),

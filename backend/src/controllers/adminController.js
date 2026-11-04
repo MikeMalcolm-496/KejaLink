@@ -12,7 +12,6 @@ const { query, queryOne, transaction } = require('../config/db');
 const { AppError } = require('../middleware/errors');
 const { Validator, toInt } = require('../utils/validator');
 const { audit, adminAction, notify } = require('../utils/audit');
-const { sendMail, escapeHtml } = require('../utils/mailer');
 const { deleteImages } = require('../utils/storage');
 const { COVER } = require('./propertyController');
 const viewings = require('../services/viewingService');
@@ -151,9 +150,7 @@ async function saveUser(req, res) {
     await adminAction(tx, req, 'create_user', u.user_id, null, `Created ${role} account`);
     return u.user_id;
   });
-  await sendMail(req.body.email, 'Your KejaLink account', `<p>An administrator created a KejaLink account for you.</p>
-    <p>Email: <b>${escapeHtml(req.body.email)}</b><br>Temporary password: <b>${temp}</b></p><p>You will choose your own password at first login.</p>`);
-  res.status(201).json({ user_id: newId, tempPassword: temp, message: `Account created for ${v.value('full_name')}.` });
+  res.status(201).json({ user_id: newId, tempPassword: temp, message: `Account created for ${v.value('full_name')}. Share the temporary password securely.` });
 }
 
 // ---------------------------------------------------------------- listings, viewings, payments, audit
@@ -202,6 +199,38 @@ async function payments(req, res) {
      left join properties p on p.property_id = pm.property_id where ${where} order by pm.created_at desc limit 200`, params);
   const t = await queryOne("select coalesce(sum(amount),0)::int total, count(*)::int n from payments where payment_status = 'success'");
   res.json({ items: rows, totalReceived: t.total, successful: t.n });
+}
+
+async function reviewPayment(req, res) {
+  const status = req.body.status;
+  if (!['success', 'failed'].includes(status)) throw new AppError(422, 'Choose whether to confirm or reject this payment.');
+  const paymentId = toInt(req.params.id);
+  const resultDesc = status === 'success' ? 'Payment confirmed by an administrator.' : 'Payment rejected by an administrator.';
+  let pay;
+
+  await transaction(async (tx) => {
+    pay = await tx.queryOne('select * from payments where payment_id = $1 for update', [paymentId]);
+    if (!pay) throw new AppError(404, 'Payment not found.');
+    if (pay.payment_method !== 'manual' || pay.payment_status !== 'pending') {
+      throw new AppError(409, 'Only pending manual payments can be reviewed.');
+    }
+    if (status === 'success') {
+      const property = await tx.queryOne("select property_id from properties where property_id = $1 and listing_status in ('available','under_offer') for update", [pay.property_id]);
+      if (!property) throw new AppError(409, 'The listing is no longer active. Reject this payment instead.');
+    }
+    await tx.query('update payments set payment_status = $1, result_desc = $2 where payment_id = $3',
+      [status, resultDesc, paymentId]);
+    if (status === 'success' && pay.property_id) {
+      await tx.query(`update properties set featured_until = greatest(coalesce(featured_until, now()), now()) + make_interval(days => $1)
+                      where property_id = $2`, [pay.feature_days, pay.property_id]);
+      await notify(tx, pay.agent_id, `Payment of KES ${Number(pay.amount)} was confirmed. Your listing is featured for ${pay.feature_days} days.`, '/agent/payments');
+    } else if (status === 'failed') {
+      await notify(tx, pay.agent_id, 'Your payment could not be confirmed. Contact an administrator if you believe this is an error.', '/agent/payments');
+    }
+  });
+
+  await audit(req, status === 'success' ? 'payment_approved' : 'payment_rejected', 'payment', paymentId, resultDesc, pay.agent_id);
+  res.json({ message: status === 'success' ? 'Payment confirmed and listing featured.' : 'Payment rejected.' });
 }
 
 async function auditLog(req, res) {
@@ -257,7 +286,6 @@ async function action(req, res) {
         await adminAction(tx, req, 'approve_agent', t.user_id, null, reason || 'Licence verified');
         await notify(tx, t.user_id, 'Your agent account is approved. You can now post listings.', '/agent/listings/new');
       });
-      await sendMail(t.email, 'Your KejaLink agent account is approved', `<p>Good news, ${escapeHtml(t.full_name)}! Your licence has been verified and you can now post listings.</p>`);
       return res.json({ message: `${t.full_name} is now an approved agent.` });
     }
     case 'reject_agent': {
@@ -295,8 +323,7 @@ async function action(req, res) {
         await tx.query('update users set password_hash = $1, must_change_password = true, failed_logins = 0, locked_until = null where user_id = $2', [await bcrypt.hash(temp, 10), t.user_id]);
         await adminAction(tx, req, 'reset_password', t.user_id, null, reason);
       });
-      await sendMail(t.email, 'Your KejaLink password was reset', `<p>An administrator reset your password. Temporary password: <b>${temp}</b></p><p>You will choose a new one when you log in.</p>`);
-      return res.json({ tempPassword: temp, message: `Password reset for ${t.full_name}. The temporary password was also e-mailed.` });
+      return res.json({ tempPassword: temp, message: `Password reset for ${t.full_name}. Share the temporary password securely.` });
     }
     case 'disable_2fa': {
       const t = await targetUser(req);
@@ -364,4 +391,4 @@ async function action(req, res) {
   }
 }
 
-module.exports = { overview, search, agents, users, getUser, saveUser, listings, allViewings, payments, auditLog, admins, action };
+module.exports = { overview, search, agents, users, getUser, saveUser, listings, allViewings, payments, reviewPayment, auditLog, admins, action };

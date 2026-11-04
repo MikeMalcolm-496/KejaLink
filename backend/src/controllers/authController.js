@@ -1,8 +1,7 @@
 /**
  * authController.js: register, login (with lockout and 2FA), logout,
- * forgot/reset password, forced password change, "who am I".
+ * forced password change, "who am I".
  */
-const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/env');
@@ -10,8 +9,7 @@ const { query, queryOne, transaction } = require('../config/db');
 const { AppError } = require('../middleware/errors');
 const { Validator } = require('../utils/validator');
 const { audit, notifyAdmins } = require('../utils/audit');
-const { sendMail, escapeHtml } = require('../utils/mailer');
-const { decrypt, verifyTotp, sha256 } = require('../utils/crypto');
+const { decrypt, verifyTotp } = require('../utils/crypto');
 const { startSession, endSession, publicUser, findUser, cookieOptions } = require('../middleware/auth');
 
 const MAX_FAILED_LOGINS = 5;
@@ -56,8 +54,6 @@ async function register(req, res) {
   });
 
   await audit(req, 'register', 'user', userId, `Registered as ${role}`, userId);
-  await sendMail(b.email, 'Welcome to KejaLink', `<p>Hi ${escapeHtml(v.value('full_name'))}, your KejaLink account is ready.${role === 'agent'
-    ? ' An administrator will verify your licence shortly; you can post listings once approved.' : ''}</p>`);
   await query('update users set last_login_at = now() where user_id = $1', [userId]);
   startSession(res, userId);
   res.status(201).json({ user: publicUser(await findUser(userId)) });
@@ -79,7 +75,7 @@ async function login(req, res) {
   }
   if (user.locked_until && new Date(user.locked_until) > new Date()) {
     const mins = Math.ceil((new Date(user.locked_until) - new Date()) / 60000);
-    throw new AppError(423, `Too many failed attempts. Try again in ${mins} minute(s) or reset your password.`);
+    throw new AppError(423, `Too many failed attempts. Try again in ${mins} minute(s) or contact an administrator.`);
   }
   if (!(await bcrypt.compare(password, user.password_hash))) {
     const fails = user.failed_logins + 1;
@@ -156,59 +152,6 @@ async function me(req, res) {
   res.json({ user: publicUser(req.user), unreadNotifications: unread, demoMode: config.demoMode });
 }
 
-// ---------------------------------------------------------------- forgot / reset password
-async function forgotPassword(req, res) {
-  const v = new Validator(req.body);
-  v.required('email', 'Email').email('email').throwIfFailed();
-  const email = v.value('email').toLowerCase();
-  const user = await queryOne("select user_id, full_name, email from users where email = $1 and account_status = 'active'", [email]);
-  let demoLink = null;
-
-  if (user) {
-    // Only one active link per user; only a SHA-256 hash of the token is stored.
-    await query('update password_resets set used_at = now() where user_id = $1 and used_at is null', [user.user_id]);
-    const token = crypto.randomBytes(32).toString('hex');
-    await query("insert into password_resets (user_id, token_hash, expires_at) values ($1, $2, now() + interval '30 minutes')",
-      [user.user_id, sha256(token)]);
-    const link = `${config.appUrl}/reset-password?token=${token}`;
-    await sendMail(user.email, 'Reset your KejaLink password',
-      `<p>Hi ${escapeHtml(user.full_name)},</p><p>Use this link to choose a new password. It works once and expires in 30 minutes.</p>
-       <p><a href="${link}" style="background:#173f35;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none">Reset my password</a></p>
-       <p>If you did not ask for this, ignore this e-mail.</p>`);
-    await audit(req, 'password_reset_requested', 'user', user.user_id, null, user.user_id);
-    if (config.mail.mode !== 'smtp') demoLink = `/reset-password?token=${token}`;   // demo: no real inbox
-  }
-  // Same answer whether or not the account exists (prevents discovering registered emails).
-  res.json({ message: 'If an account exists for that email, a reset link is on its way.', demoLink });
-}
-
-async function checkResetToken(token) {
-  if (!/^[a-f0-9]{64}$/.test(String(token || ''))) return null;
-  return queryOne(`select r.*, u.email from password_resets r join users u on u.user_id = r.user_id
-                   where r.token_hash = $1 and r.used_at is null and r.expires_at > now()`, [sha256(token)]);
-}
-
-async function validateResetToken(req, res) {
-  const reset = await checkResetToken(req.query.token);
-  res.json({ valid: Boolean(reset), email: reset ? reset.email : null });
-}
-
-async function resetPassword(req, res) {
-  const reset = await checkResetToken(req.body.token);
-  if (!reset) throw new AppError(400, 'This reset link is invalid or has expired. Request a new one.');
-  const v = new Validator(req.body);
-  v.required('password', 'Password').password('password')
-    .matches('password', 'password_confirm', 'The two passwords do not match.').throwIfFailed();
-  const hash = await bcrypt.hash(req.body.password, 10);
-  await transaction(async (tx) => {
-    await tx.query('update users set password_hash = $1, failed_logins = 0, locked_until = null, must_change_password = false where user_id = $2',
-      [hash, reset.user_id]);
-    await tx.query('update password_resets set used_at = now() where reset_id = $1', [reset.reset_id]);
-  });
-  await audit(req, 'password_reset', 'user', reset.user_id, null, reset.user_id);
-  res.json({ message: 'Password changed. You can now log in with your new password.' });
-}
-
 /** After an admin reset: replace the temporary password. */
 async function changeTemporaryPassword(req, res) {
   if (!req.user) throw new AppError(401, 'Please log in to continue.');
@@ -224,5 +167,5 @@ async function changeTemporaryPassword(req, res) {
 }
 
 module.exports = {
-  register, login, verifyTwoFactor, logout, me, forgotPassword, validateResetToken, resetPassword, changeTemporaryPassword,
+  register, login, verifyTwoFactor, logout, me, changeTemporaryPassword,
 };

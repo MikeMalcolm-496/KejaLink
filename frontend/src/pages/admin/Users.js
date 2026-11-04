@@ -49,7 +49,7 @@ export default function Users() {
                 <td>{canManage(u) ? (
                   <div className="req-actions" style={{ flexWrap: 'nowrap' }}>
                     <Link to={`/admin/users/${u.user_id}/edit`} className="btn btn-ghost btn-sm" aria-label={`Edit ${u.full_name}`}><Icon name="edit" size={15} /></Link>
-                    <button className="btn btn-ghost btn-sm" title="Reset password" onClick={() => act.withConfirm('reset_password', { user_id: u.user_id }, { title: 'Reset password?', text: `Give ${u.full_name} a temporary password? It is shown once and e-mailed; they must change it at next login.`, confirmText: 'Reset password', tone: 'primary' }).then(() => {})}
+                    <button className="btn btn-ghost btn-sm" title="Reset password" onClick={() => act.withConfirm('reset_password', { user_id: u.user_id }, { title: 'Reset password?', text: `Give ${u.full_name} a temporary password? It is shown once; share it securely. They must change it at next login.`, confirmText: 'Reset password', tone: 'primary' }).then(() => {})}
                       aria-label={`Reset password for ${u.full_name}`}><Icon name="key" size={15} /></button>
                     {u.twofa_enabled && <button className="btn btn-ghost btn-sm" onClick={() => act.withConfirm('disable_2fa', { user_id: u.user_id }, { title: 'Turn off 2FA?', text: `Only do this after confirming ${u.full_name}'s identity.`, confirmText: 'Turn off 2FA' })}>2FA off</button>}
                     {u.account_status === 'active'

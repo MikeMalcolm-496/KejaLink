@@ -20,7 +20,7 @@ KejaLink-JS/
 │   │   ├── routes/          URL → controller for each module
 │   │   ├── controllers/     auth, property, me, agent, admin, report, payment
 │   │   ├── services/        viewingService.js: the main transaction and its rules
-│   │   └── utils/           validator, audit + notifications, crypto (2FA), mailer, storage, mpesa
+│   │   └── utils/           validator, audit + notifications, crypto (2FA), storage
 │   └── .env.example         every setting, explained
 ├── frontend/            React app (webpack + Babel, custom CSS only)
 │   ├── src/
@@ -32,7 +32,7 @@ KejaLink-JS/
 │   │   ├── pages/           public, auth, client, account, agent, admin pages
 │   │   └── styles/          tokens.css (colours, type, spacing) + base/layout/components/pages
 │   └── webpack.config.js
-├── tests/e2e.test.js    76 automated browser tests (Playwright)
+├── tests/e2e.test.js    automated browser tests (Playwright)
 ├── docs/screenshots/    screenshots of every main screen
 ├── MIGRATION_PLAN.md    how each PHP page/file maps to the new stack
 └── DEPLOYMENT.md        putting it online (Render + Supabase)
@@ -90,15 +90,15 @@ The login page has a "Demo accounts" list that fills in the form (turn it off wi
 
 | Requirement | Where |
 |---|---|
-| Database: entities, normalisation, relationships | `database/01_schema.sql`: 13 tables (3NF), foreign keys with cascade rules, CHECK constraints, partial unique indexes, trigger |
+| Database: entities, normalisation, relationships | `database/01_schema.sql`: 12 tables (3NF), foreign keys with cascade rules, CHECK constraints, partial unique indexes, trigger |
 | Add / delete / edit / browse / search | Listings, users, viewings, inquiries, favourites; search with 6 filters, sorting, pagination |
 | Help facilities, error messages | `/help` (searchable), "?" button on every panel page, field-level validation, friendly 403/404 and crash pages |
 | Main transaction | Viewing booking: `backend/src/services/viewingService.js` (row lock, business rules, database guard against double booking) |
-| Levels of access | Client, Agent, Admin, Super admin; login, logout, registration, forgot password, forced password change |
+| Levels of access | Client, Agent, Admin, Super admin; login, logout, registration, admin-assisted password reset, forced password change |
 | Reports | 7 reports (admins) / 4 (agents); PDF with company name, logo, date, filters, page numbers; CSV; filters; sorting |
-| Frameworks, libraries, APIs | React, React Router, Express, pg, bcryptjs, jsonwebtoken, multer, pdfkit, nodemailer, qrcode, M-Pesa Daraja STK Push, Supabase Storage |
+| Frameworks, libraries, APIs | React, React Router, Express, pg, bcryptjs, jsonwebtoken, multer, pdfkit, qrcode, Supabase Storage |
 | Validation, exceptions, key trapping, recovery | Same rules in browser and server; error middleware with reference codes; transactions with rollback; upload clean-up; key trapping on numeric fields; unsaved-changes warning; double-submit protection |
-| Creativity | Custom design system; live slot picker; M-Pesa featured listings; affordability and mortgage calculators; photo lightbox; drag-and-drop uploads; SVG charts; notifications |
+| Creativity | Custom design system; live slot picker; admin-reviewed manual featured-listing payments; affordability and mortgage calculators; photo lightbox; drag-and-drop uploads; SVG charts; notifications |
 | Security | bcrypt; parameterised SQL; httpOnly SameSite JWT cookie; CSRF header guard; rate limiting; lockout; 2FA (TOTP) with AES-256-GCM-encrypted secrets; file content checks; Row Level Security; security headers |
 | Audit trail | `audit_logs` + Admin > Activity log |
 | Deployment | `DEPLOYMENT.md` (Render + Supabase) |

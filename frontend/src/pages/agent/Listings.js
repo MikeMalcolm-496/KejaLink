@@ -68,7 +68,7 @@ export default function Listings() {
                 <td>{approved && p.listing_status !== 'removed' && (
                   <div className="req-actions" style={{ flexWrap: 'nowrap' }}>
                     <Link to={`/agent/listings/${p.property_id}/edit`} className="btn btn-ghost btn-sm">Edit</Link>
-                    <Link to={`/agent/payments?property_id=${p.property_id}`} className="btn btn-ghost btn-sm" title="Feature with M-Pesa" aria-label={`Feature ${p.title}`}><Icon name="star" size={16} /></Link>
+                    <Link to={`/agent/payments?property_id=${p.property_id}`} className="btn btn-ghost btn-sm" title="Feature this listing" aria-label={`Feature ${p.title}`}><Icon name="star" size={16} /></Link>
                     <button className="btn btn-danger btn-sm" onClick={() => remove(p)}>Delete</button>
                   </div>)}</td>
               </tr>))}</tbody>

@@ -5,14 +5,14 @@
 | Area | PHP files | What they do |
 |---|---|---|
 | Public site | `index.php`, `listings.php`, `property.php`, `help.php` | Home, search with 6 filters + sorting + paging, property details (gallery, map, calculator, booking, inquiry, report), help centre |
-| Auth | `auth/login, register, logout, forgot_password, reset_password, two_factor, change_password` | Login with lockout, client/agent registration, reset by e-mailed token, TOTP 2FA step, forced password change |
+| Auth | `auth/login, register, logout, two_factor, change_password` | Login with lockout, client/agent registration, admin-assisted password reset, TOTP 2FA step, forced password change |
 | Client | `client/saved, viewings, inquiries` | Favourites, my viewings (cancel), my inquiries |
-| Agent | `agent/index, listings, listing_form, viewings, inquiries, payments, reports` | Dashboard, listing CRUD with photos, confirm/reschedule/decline/complete viewings, reply to inquiries, M-Pesa featuring, own reports |
+| Agent | `agent/index, listings, listing_form, viewings, inquiries, payments, reports` | Dashboard, listing CRUD with photos, confirm/reschedule/decline/complete viewings, reply to inquiries, manual featured-listing payments, own reports |
 | Admin | `admin/index, agents, users, user_form, listings, viewings, payments, reports, audit, admins, actions` | Overview + charts, agent verification, user management, moderation, oversight lists, 7 reports, activity log, super-admin tools |
 | Account | `account/profile, security, notifications` | Profile, password + 2FA set-up, notifications |
-| Endpoints | `actions/*`, `api/*` | Booking, inquiry, favourite (AJAX), report listing, slot availability, payment status, M-Pesa callback |
-| Business logic | `includes/viewings.php`, `properties.php`, `reports.php`, `mpesa.php`, `auth.php`, `security.php`, `audit.php` | Main transaction rules, search, report engine, Daraja API, sessions, encryption/TOTP, audit trail |
-| Database | MySQL, 13 tables | See section 3 |
+| Endpoints | `actions/*`, `api/*` | Booking, inquiry, favourite (AJAX), report listing, slot availability, manual payment submission and review |
+| Business logic | `includes/viewings.php`, `properties.php`, `reports.php`, `auth.php`, `security.php`, `audit.php` | Main transaction rules, search, report engine, sessions, encryption/TOTP, audit trail |
+| Database | MySQL source, 13 tables; current schema has 12 tables (email reset tokens removed) | See section 3 |
 
 ## 2. Target stack
 
@@ -22,7 +22,7 @@
 - **Photos:** Supabase Storage bucket `property-images`, uploaded by the backend only.
 - **Auth:** our own (bcrypt + JWT in an httpOnly cookie), not Supabase Auth, so roles, lockout, 2FA, forced password change and the audit trail stay fully in our code and can be explained in the presentation.
 
-Small npm libraries (not frameworks) on the backend: `express`, `pg`, `bcryptjs`, `jsonwebtoken`, `cookie-parser`, `multer` (uploads), `pdfkit` (PDF reports), `nodemailer` (e-mail), `dotenv`. Frontend: `react`, `react-dom`, `react-router-dom` only. Charts, icons and QR codes are drawn with our own SVG components; no UI library.
+Small npm libraries (not frameworks) on the backend: `express`, `pg`, `bcryptjs`, `jsonwebtoken`, `cookie-parser`, `multer` (uploads), `pdfkit` (PDF reports), `dotenv`. Frontend: `react`, `react-dom`, `react-router-dom` only. Charts, icons and QR codes are drawn with our own SVG components; no UI library.
 
 ## 3. Database changes (MySQL → PostgreSQL)
 
@@ -37,7 +37,7 @@ Small npm libraries (not frameworks) on the backend: `express`, `pg`, `bcryptjs`
 | (new) | `CHECK (email = lower(email))`, whole-hour viewing slots, message length | Rules moved from code into the database |
 | (none) | Row Level Security ON for every table, no policies | Blocks Supabase's public REST API; only our backend reads/writes |
 
-Tables stay the same 13, with the same names and columns, so the ER diagram and report from Deliverables 2–4 still apply.
+The current PostgreSQL schema has 12 tables; email password-reset tokens are no longer part of the application.
 
 ## 4. Page and API mapping
 
@@ -46,12 +46,11 @@ Tables stay the same 13, with the same names and columns, so the ER diagram and 
 | index.php | `/` | `GET /api/properties?featured` |
 | listings.php | `/listings` | `GET /api/properties` (filters, sort, page) |
 | property.php | `/properties/:id` | `GET /api/properties/:id`, `GET /api/properties/:id/slots`, `POST /api/viewings`, `POST /api/inquiries`, `POST /api/favourites/:id`, `POST /api/reports/listing` |
-| auth/* | `/login`, `/register`, `/forgot-password`, `/reset-password`, `/two-factor`, `/change-password` | `POST /api/auth/login`, `/register`, `/logout`, `/forgot-password`, `/reset-password`, `/2fa/verify`; `GET /api/auth/me` |
+| auth/* | `/login`, `/register`, `/two-factor`, `/change-password` | `POST /api/auth/login`, `/register`, `/logout`, `/2fa/verify`; `GET /api/auth/me` |
 | client/* | `/client/saved`, `/client/viewings`, `/client/inquiries` | `GET /api/me/favourites`, `/me/viewings`, `/me/inquiries`; `PATCH /api/viewings/:id` (cancel) |
-| agent/* | `/agent`, `/agent/listings`, `/agent/listings/new`, `/agent/listings/:id/edit`, `/agent/viewings`, `/agent/inquiries`, `/agent/payments`, `/agent/reports` | `/api/agent/...` CRUD, `PATCH /api/viewings/:id`, `POST /api/payments/stk`, `GET /api/payments/:id` |
+| agent/* | `/agent`, `/agent/listings`, `/agent/listings/new`, `/agent/listings/:id/edit`, `/agent/viewings`, `/agent/inquiries`, `/agent/payments`, `/agent/reports` | `/api/agent/...` CRUD, `PATCH /api/viewings/:id`, `POST /api/payments` |
 | admin/* | `/admin`, `/admin/agents`, `/admin/users`, `/admin/users/new`, `/admin/listings`, `/admin/viewings`, `/admin/payments`, `/admin/reports`, `/admin/audit`, `/admin/admins` | `/api/admin/...`, `POST /api/admin/actions/:action` |
 | account/* | `/account/profile`, `/account/security`, `/account/notifications` | `/api/me/profile`, `/api/me/password`, `/api/me/2fa`, `/api/me/notifications` |
-| api/mpesa_callback.php | (none) | `POST /api/payments/mpesa-callback` |
 | reports (PDF/CSV) | download buttons | `GET /api/reports/:type?format=pdf|csv` |
 | help.php | `/help` | (static content in React) |
 

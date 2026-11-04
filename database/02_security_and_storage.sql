@@ -21,7 +21,6 @@ alter table inquiries        enable row level security;
 alter table viewings         enable row level security;
 alter table admin_actions    enable row level security;
 alter table audit_logs       enable row level security;
-alter table password_resets  enable row level security;
 alter table payments         enable row level security;
 alter table notifications    enable row level security;
 alter table listing_reports  enable row level security;
