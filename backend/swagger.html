@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KejaLink API Docs</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui.css" />
+  <style>
+    body { margin: 0; background: #fafafa; }
+    .topbar-custom {
+      display: flex; gap: 8px; align-items: center; padding: 12px 20px;
+      background: #1b1b1b; color: #fff; font-family: sans-serif;
+    }
+    .topbar-custom strong { margin-right: 12px; }
+    .topbar-custom input {
+      flex: 1; padding: 8px 10px; border-radius: 4px; border: 1px solid #555;
+      background: #2b2b2b; color: #fff; font-size: 14px;
+    }
+    .topbar-custom button {
+      padding: 8px 16px; border: 0; border-radius: 4px; cursor: pointer;
+      background: #49cc90; color: #000; font-weight: 600;
+    }
+    #notice { display: none; padding: 10px 20px; background: #fff3cd; color: #664d03;
+      font-family: sans-serif; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="topbar-custom">
+    <strong>KejaLink API</strong>
+    <input id="specUrl" value="http://localhost:5000/api-docs.json" />
+    <button onclick="loadSpec()">Load</button>
+  </div>
+  <div id="notice"></div>
+  <div id="swagger-ui"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui-bundle.js"></script>
+  <script>
+    // Fallback spec, shown if your backend isn't reachable.
+    // Edit the paths below to match your real routes.
+    const fallbackSpec = {
+      openapi: "3.0.0",
+      info: { title: "KejaLink API", version: "1.0.0", description: "Fallback spec (backend not reachable)" },
+      servers: [{ url: "http://localhost:5000" }],
+      components: {
+        securitySchemes: { bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" } }
+      },
+      paths: {
+        "/api/listings": {
+          get: {
+            summary: "Get all listings", tags: ["Listings"],
+            responses: { "200": { description: "List of listings" } }
+          },
+          post: {
+            summary: "Create a listing", tags: ["Listings"],
+            security: [{ bearerAuth: [] }],
+            requestBody: {
+              required: true,
+              content: { "application/json": { schema: {
+                type: "object",
+                properties: { title: { type: "string" }, price: { type: "number" } }
+              } } }
+            },
+            responses: { "201": { description: "Created" } }
+          }
+        }
+      }
+    };
+
+    function render(config) {
+      window.ui = SwaggerUIBundle(Object.assign({
+        dom_id: "#swagger-ui",
+        deepLinking: true,
+        persistAuthorization: true,
+        tryItOutEnabled: true
+      }, config));
+    }
+
+    async function loadSpec() {
+      const url = document.getElementById("specUrl").value.trim();
+      const notice = document.getElementById("notice");
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        await res.json();
+        notice.style.display = "none";
+        render({ url });
+      } catch (err) {
+        notice.style.display = "block";
+        notice.textContent = "Could not load " + url + " (" + err.message +
+          "). Showing the built-in sample. Make sure the backend is running and has CORS enabled.";
+        render({ spec: fallbackSpec });
+      }
+    }
+
+    loadSpec();
+  </script>
+</body>
+</html>

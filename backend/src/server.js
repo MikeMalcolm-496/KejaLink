@@ -51,6 +51,10 @@ app.listen(port, '0.0.0.0', () => {
   pool.query('select count(*) from users')
     .then((r) => console.log(`Database connected (${r.rows[0].count} users).`))
     .catch((err) => console.error('DATABASE CONNECTION FAILED:', err.message));
+
 });
+
+const cors = require('cors'); // npm install cors
+app.use(cors());
 
 module.exports = app;
