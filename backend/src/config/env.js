@@ -11,7 +11,7 @@ const isProduction = env('NODE_ENV', 'development') === 'production';
 const config = {
   port: Number(env('PORT', 5000)),
   isProduction,
-  frontendUrl: env('FRONTEND_URL', isProduction ? 'https://kejalink-1-ft8q.onrender.com' : ''),
+  frontendUrl: env('FRONTEND_URL', ''),
   company: env('COMPANY_NAME', 'KejaLink Realty Solutions Ltd'),
   demoMode: env('DEMO_MODE', 'true') === 'true',              // shows demo accounts on the login page
 

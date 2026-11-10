@@ -15,8 +15,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
   const production = argv.mode === 'production';
-  const defaultApiBaseUrl = production ? 'https://kejalink-ipe1.onrender.com' : '';
-  const apiBaseUrl = (process.env.API_BASE_URL || defaultApiBaseUrl).replace(/\/+$/, '');
+  const apiBaseUrl = (process.env.API_BASE_URL || '').replace(/\/+$/, '');
   return {
     entry: './src/index.js',
     output: {

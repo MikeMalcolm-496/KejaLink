@@ -1,0 +1,177 @@
+{
+  "planHash": "aab1c219d671c7216ca96b935bdf5d921b5678d9ddc791054cd69a78e2178851",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-11-10T16:18:06.2079004Z",
+  "retryCount": 0,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 0,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "frontend-production-build",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E kejalink-frontend@1.0.0 build\r\n\u003E webpack --mode production\r\n\r\nassets by status 238 KiB \u001B[1m\u001B[32m[cached]\u001B[39m\u001B[22m 3 assets\r\nassets by path \u001B[1m\u001B[32mfonts/\u001B[39m\u001B[22m 1.02 MiB 74 assets\r\nassets by path \u001B[1m\u001B[32mseed/\u001B[39m\u001B[22m 1.85 MiB\r\n  asset \u001B[1m\u001B[32mseed/seed-09-1.jpg\u001B[39m\u001B[22m 57.2 KiB \u001B[1m\u001B[33m[compared for emit]\u001B[39m\u001B[22m [from: public/seed/seed-09-1.jpg] \u001B[1m\u001B[32m[copied]\u001B[39m\u001B[22m\r\n  \u002B 43 assets\r\nassets by path \u001B[1m\u001B[32mviews/*.html\u001B[39m\u001B[22m 11.3 KiB\r\n  asset \u001B[1m\u001B[32mviews/help.html\u001B[39m\u001B[22m 4.53 KiB \u001B[1m\u001B[33m[compared for emit]\u001B[39m\u001B[22m [from: public/views/help.html] \u001B[1m\u001B[32m[copied]\u001B[39m\u001B[22m \u001B[1m\u001B[32m[minimized]\u001B[39m\u001B[22m\r\n  \u002B 4 assets\r\nassets by status 379 KiB \u001B[1m\u001B[32m[emitted]\u001B[39m\u001B[22m\r\n  asset \u001B[1m\u001B[33mjs/932.779ba36a.js\u001B[39m\u001B[22m \u001B[1m\u001B[33m334 KiB\u001B[39m\u001B[22m \u001B[1m\u001B[32m[emitted]\u001B[39m\u001B[22m \u001B[1m\u001B[32m[immutable]\u001B[39m\u001B[22m \u001B[1m\u001B[32m[minimized]\u001B[39m\u001B[22m \u001B[1m\u001B[33m[big]\u001B[39m\u001B[22m 1 related asset\r\n  \u002B 3 assets\r\nassets by path \u001B[1m\u001B[32m*.svg\u001B[39m\u001B[22m 784 bytes\r\n  asset \u001B[1m\u001B[32mfavicon.svg\u001B[39m\u001B[22m 392 bytes \u001B[1m\u001B[33m[compared for emit]\u001B[39m\u001B[22m\r\n  asset \u001B[1m\u001B[32mlogo.svg\u001B[39m\u001B[22m 392 bytes \u001B[1m\u001B[33m[compared for emit]\u001B[39m\u001B[22m [from: public/logo.svg] \u001B[1m\u001B[32m[copied]\u001B[39m\u001B[22m\r\norphan modules 702 KiB (javascript) 1.02 MiB (asset) 12.8 KiB (runtime) \u001B[1m\u001B[33m[orphan]\u001B[39m\u001B[22m 232 modules\r\nruntime modules 9.73 KiB 11 modules\r\ncacheable modules 1.09 MiB (javascript) 79.9 KiB (css/mini-extract)\r\n  modules by path \u001B[1m./node_modules/\u001B[39m\u001B[22m 448 KiB (javascript) 16.6 KiB (css/mini-extract)\r\n    javascript modules 448 KiB 12 modules\r\n    modules by path \u001B[1m./node_modules/@fontsource/\u001B[39m\u001B[22m 16.6 KiB\r\n      modules by path \u001B[1m./node_modules/@fontsource/inter/*.css\u001B[39m\u001B[22m 12 KiB 4 modules\r\n      modules by path \u001B[1m./node_modules/@fontsource/space-grotesk/*.css\u001B[39m\u001B[22m 4.59 KiB 3 modules\r\n  modules by path \u001B[1m./src/\u001B[39m\u001B[22m 63.2 KiB (css/mini-extract) 663 KiB (javascript)\r\n    css modules 63.2 KiB\r\n      css ./node_modules/css-loader/dist/cjs.js!\u001B[1m./src/styles/landing.css\u001B[39m\u001B[22m 8.65 KiB \u001B[1m\u001B[33m[built]\u001B[39m\u001B[22m \u001B[1m\u001B[33m[code generated]\u001B[39m\u001B[22m\r\n      \u002B 6 modules\r\n    javascript modules 663 KiB\r\n      modules by path \u001B[1m./src/*.js\u001B[39m\u001B[22m 597 KiB 2 modules\r\n      \u002B 2 modules\r\nwebpack 5.112.2 compiled \u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m in 24073 ms\r\n",
+        "durationMs": 31206
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E kejalink-backend@1.0.0 test\r\n\u003E node --test --test-reporter=tap test/swagger.test.js\r\n\r\nTAP version 13\r\n# Subtest: OpenAPI document describes the deployed API\r\nok 1 - OpenAPI document describes the deployed API\r\n  ---\r\n  duration_ms: 4.0265\r\n  type: \u0027test\u0027\r\n  ...\r\n# Subtest: Swagger UI loads the OpenAPI document and supports API testing\r\nok 2 - Swagger UI loads the OpenAPI document and supports API testing\r\n  ---\r\n  duration_ms: 1.9442\r\n  type: \u0027test\u0027\r\n  ...\r\n1..2\r\n# tests 2\r\n# suites 0\r\n# pass 2\r\n# fail 0\r\n# cancelled 0\r\n# skipped 0\r\n# todo 0\r\n# duration_ms 240.081\r\n",
+        "durationMs": 1948,
+        "testResults": {
+          "testFramework": "unknown",
+          "runnerDetectedFrom": "none",
+          "testsTotal": 0,
+          "testsPassed": 0,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": true
+        }
+      },
+      {
+        "name": "health-endpoint-200",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n{\u0022ok\u0022:true,\u0022database\u0022:\u0022connected\u0022}\n--- server output ---\n\r\n\u003E kejalink@2.0.0 start\r\n\u003E npm --prefix backend start\r\n\r\n\r\n\u003E kejalink-backend@1.0.0 start\r\n\u003E node src/server.js\r\n\r\nKejaLink running on port 39201\r\nFrontend: serving frontend/dist\r\n",
+        "durationMs": 9032
+      },
+      {
+        "name": "login-route-serves-app",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n\u003C!doctype html\u003E\u003Chtml lang=en\u003E\u003Chead\u003E\u003Cmeta charset=utf-8\u003E\u003Cmeta name=viewport content=\u0022width=device-width,initial-scale=1\u0022\u003E\u003Cmeta name=description content=\u0022KejaLink connects people looking for a home with licensed, verified Kenyan agents.\u0022\u003E\u003Cmeta name=theme-color content=#0c6a5d\u003E\u003Ctitle\u003EKejaLink\u003C/title\u003E\u003Clink rel=icon href=/favicon.svg\u003E\u003Cscript defer src=/js/main.a052d329.js\u003E\u003C/script\u003E\u003C/head\u003E\u003Cbody\u003E\u003Cnoscript\u003EKejaLink needs JavaScript to load listings and manage your account. Please enable JavaScript.\u003C/noscript\u003E\u003Cdiv id=root\u003E\u003C/div\u003E\u003C/body\u003E\u003C/html\u003E\n--- server output ---\n\r\n\u003E kejalink@2.0.0 start\r\n\u003E npm --prefix backend start\r\n\r\n\r\n\u003E kejalink-backend@1.0.0 start\r\n\u003E node src/server.js\r\n\r\nKejaLink running on port 39202\r\nFrontend: serving frontend/dist\r\n",
+        "durationMs": 4665
+      },
+      {
+        "name": "openapi-document-200",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n{\u0022openapi\u0022:\u00223.0.3\u0022,\u0022info\u0022:{\u0022title\u0022:\u0022KejaLink API\u0022,\u0022version\u0022:\u00221.0.0\u0022,\u0022description\u0022:\u0022REST API for KejaLink property listings and viewing management.\\n\\nInteractive requests use the session cookie from the same browser. Log in through the KejaLink app first to call protected endpoints.\\n\\nThe API requires the X-KejaLink: 1 header for state-changing requests; the documentation page adds it automatically.\u0022},\u0022servers\u0022:[{\u0022url\u0022:\u0022/\u0022,\u0022description\u0022:\u0022This KejaLink server\u0022}],\u0022tags\u0022:[{\u0022name\u0022:\u0022Health\u0022},{\u0022name\u0022:\u0022Authentication\u0022},{\u0022name\u0022:\u0022Properties\u0022},{\u0022name\u0022:\u0022My account\u0022},{\u0022name\u0022:\u0022Agent\u0022},{\u0022name\u0022:\u0022Admin\u0022},{\u0022name\u0022:\u0022Reports\u0022},{\u0022name\u0022:\u0022Payments\u0022}],\u0022paths\u0022:{\u0022/api/health\u0022:{\u0022get\u0022:{\u0022summary\u0022:\u0022Check API and database health\u0022,\u0022tags\u0022:[\u0022Health\u0022],\u0022responses\u0022:{\u0022200\u0022:{\u0022description\u0022:\u0022API and database are available.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022ok\u0022:{\u0022type\u0022:\u0022boolean\u0022},\u0022database\u0022:{\u0022type\u0022:\u0022string\u0022}}}}}},\u0022400\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022401\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022403\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022500\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}}}}},\u0022/api/auth/me\u0022:{\u0022get\u0022:{\u0022summary\u0022:\u0022Get the current session, if signed in\u0022,\u0022tags\u0022:[\u0022Authentication\u0022],\u0022responses\u0022:{\u0022200\u0022:{\u0022description\u0022:\u0022Successful response.\u0022},\u0022400\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022401\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022403\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022500\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}}}}},\u0022/api/auth/register\u0022:{\u0022post\u0022:{\u0022summary\u0022:\u0022Register a client or agent account\u0022,\u0022tags\u0022:[\u0022Authentication\u0022],\u0022responses\u0022:{\u0022201\u0022:{\u0022description\u0022:\u0022Account created.\u0022},\u0022400\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022401\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022403\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error mes\n\u2026[truncated]",
+        "durationMs": 5173
+      },
+      {
+        "name": "properties-endpoint-200",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n{\u0022items\u0022:[{\u0022property_id\u0022:11,\u0022title\u0022:\u00225-bedroom villa on one acre\u0022,\u0022listing_type\u0022:\u0022sale\u0022,\u0022property_type\u0022:\u0022house\u0022,\u0022price\u0022:\u0022120000000.00\u0022,\u0022bedrooms\u0022:5,\u0022bathrooms\u0022:6,\u0022location\u0022:\u0022Karen, Nairobi\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:\u00222026-11-24T09:04:08.954Z\u0022,\u0022views_count\u0022:256,\u0022created_at\u0022:\u00222026-09-01T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Prime Homes Ltd\u0022,\u0022agent_name\u0022:\u0022Wanjiru Kamau\u0022,\u0022cover\u0022:\u0022/seed/seed-11-1.jpg\u0022,\u0022is_saved\u0022:false},{\u0022property_id\u0022:8,\u0022title\u0022:\u0022Bedsitter off Thika Road\u0022,\u0022listing_type\u0022:\u0022rent\u0022,\u0022property_type\u0022:\u0022apartment\u0022,\u0022price\u0022:\u002212000.00\u0022,\u0022bedrooms\u0022:0,\u0022bathrooms\u0022:1,\u0022location\u0022:\u0022Roysambu, Nairobi\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:null,\u0022views_count\u0022:350,\u0022created_at\u0022:\u00222026-10-27T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Skyline Realty\u0022,\u0022agent_name\u0022:\u0022Brian Otieno\u0022,\u0022cover\u0022:\u0022/seed/seed-08-1.jpg\u0022,\u0022is_saved\u0022:false},{\u0022property_id\u0022:12,\u0022title\u0022:\u0022Ground-floor shop space\u0022,\u0022listing_type\u0022:\u0022rent\u0022,\u0022property_type\u0022:\u0022commercial\u0022,\u0022price\u0022:\u002260000.00\u0022,\u0022bedrooms\u0022:0,\u0022bathrooms\u0022:1,\u0022location\u0022:\u0022Kasarani, Nairobi\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:null,\u0022views_count\u0022:61,\u0022created_at\u0022:\u00222026-10-23T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Skyline Realty\u0022,\u0022agent_name\u0022:\u0022Brian Otieno\u0022,\u0022cover\u0022:\u0022/seed/seed-12-1.jpg\u0022,\u0022is_saved\u0022:false},{\u0022property_id\u0022:5,\u0022title\u0022:\u00221-bedroom apartment\u0022,\u0022listing_type\u0022:\u0022rent\u0022,\u0022property_type\u0022:\u0022apartment\u0022,\u0022price\u0022:\u002232000.00\u0022,\u0022bedrooms\u0022:1,\u0022bathrooms\u0022:1,\u0022location\u0022:\u0022South B, Nairobi\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:null,\u0022views_count\u0022:221,\u0022created_at\u0022:\u00222026-10-20T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Prime Homes Ltd\u0022,\u0022agent_name\u0022:\u0022Wanjiru Kamau\u0022,\u0022cover\u0022:\u0022/seed/seed-05-1.jpg\u0022,\u0022is_saved\u0022:false},{\u0022property_id\u0022:7,\u0022title\u0022:\u00223-bedroom apartment with pool\u0022,\u0022listing_type\u0022:\u0022rent\u0022,\u0022property_type\u0022:\u0022apartment\u0022,\u0022price\u0022:\u0022120000.00\u0022,\u0022bedrooms\u0022:3,\u0022bathrooms\u0022:3,\u0022location\u0022:\u0022Kileleshwa, Nairobi\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:null,\u0022views_count\u0022:198,\u0022created_at\u0022:\u00222026-10-13T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Prime Homes Ltd\u0022,\u0022agent_name\u0022:\u0022Wanjiru Kamau\u0022,\u0022cover\u0022:\u0022/seed/seed-07-1.jpg\u0022,\u0022is_saved\u0022:false},{\u0022property_id\u0022:15,\u0022title\u0022:\u00223-bedroom beach apartment\u0022,\u0022listing_type\u0022:\u0022rent\u0022,\u0022property_type\u0022:\u0022apartment\u0022,\u0022price\u0022:\u002290000.00\u0022,\u0022bedrooms\u0022:3,\u0022bathrooms\u0022:3,\u0022location\u0022:\u0022Nyali, Mombasa\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:null,\u0022views_count\u0022:176,\u0022created_at\u0022:\u00222026-10-07T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Coastline Properties\u0022,\u0022agent_name\u0022:\u0022Fatuma Hassan\u0022,\u0022cover\u0022:\u0022/seed/seed-15-1.jpg\u0022,\u0022is_saved\u0022:false},{\u0022property_id\u0022:3,\u0022title\u0022:\u0022Studio apartment near Sarit\u0022,\u0022listing_type\u0022:\u0022rent\u0022,\u0022property_type\u0022:\u0022apartment\u0022,\u0022price\u0022:\u002245000.00\u0022,\u0022bedrooms\u0022:0,\u0022bathrooms\u0022:1,\u0022location\u0022:\u0022Westlands, Nairobi\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:null,\u0022views_count\u0022:305,\u0022created_at\u0022:\u00222026-10-05T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Skyline Realty\u0022,\u0022agent_name\u0022:\u0022Brian Otieno\u0022,\u0022cover\u0022:\u0022/seed/seed-03-1.jpg\u0022,\u0022is_saved\u0022:false},{\u0022property_id\u0022:13,\u0022title\u0022:\u00222-bedroom apartment near SGR\u0022,\u0022listing_type\u0022:\u0022sale\u0022,\u0022property_type\u0022:\u0022apartment\u0022,\u0022price\u0022:\u00226500000.00\u0022,\u0022bedrooms\u0022:2,\u0022bathrooms\u0022:2,\u0022location\u0022:\u0022Syokimau, Machakos\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:null,\u0022views_count\u0022:133,\u0022created_at\u0022:\u00222026-09-29T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Skyline Realty\u0022,\u0022agent_name\u0022:\u0022Brian Otieno\u0022,\u0022cover\u0022:\u0022/seed/seed-13-1.jpg\u0022,\u0022is_saved\u0022:false},{\u0022property_id\u0022:1,\u0022title\u0022:\u00222-bedroom apartment with balcony\u0022,\u0022listing_type\u0022:\u0022rent\u0022,\u0022property_type\u0022:\u0022apartment\u0022,\u0022price\u0022:\u002285000.00\u0022,\u0022bedrooms\u0022:2,\u0022bathrooms\u0022:2,\u0022location\u0022:\u0022Kilimani, Nairobi\u0022,\u0022listing_status\u0022:\u0022available\u0022,\u0022featured_until\u0022:\u00222026-11-10T09:04:08.954Z\u0022,\u0022views_count\u0022:412,\u0022created_at\u0022:\u00222026-09-25T09:04:08.954Z\u0022,\u0022agency_name\u0022:\u0022Prime Homes Ltd\u0022,\u0022agent_name\u0022:\u0022Wanjiru Kamau\u0022,\u0022cover\u0022:\u0022/seed/seed-01-1.jpg\u0022,\u0022is_saved\u0022:false}],\u0022total\u0022:14,\u0022page\u0022:1,\u0022pages\u0022:2,\u0022filters\u0022:{\u0022q\u0022:\u0022\u0022,\u0022location\u0022:\u0022\u0022,\u0022listing_type\u0022:\u0022\u0022,\u0022property_type\u0022:\u0022\u0022,\u0022min_price\u0022:null,\u0022max_price\u0022:null,\u0022bedrooms\u0022:null,\u0022sort\u0022:\u0022newest\u0022},\u0022ms\u0022:1886}\n--- server output ---\n\r\n\u003E kejalink@2.0.0 start\r\n\u003E npm --prefix backend start\r\n\r\n\r\n\u003E kejalink-backend@1.0.0 start\r\n\u003E node src/server.js\r\n\r\nKejaLink running on port 39204\r\nFrontend: serving frontend/dist\r\nDatabase connected (14 users).\r\n",
+        "durationMs": 7004
+      }
+    ],
+    "executions": [
+      {
+        "source": "frontend-production-build",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "--prefix",
+          "frontend",
+          "run",
+          "build"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "--prefix",
+          "backend",
+          "test"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "health-endpoint-200",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "start"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS",
+        "env": {
+          "PORT": "39201"
+        },
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "login-route-serves-app",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "start"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS",
+        "env": {
+          "PORT": "39202"
+        },
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "openapi-document-200",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "start"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS",
+        "env": {
+          "PORT": "39203"
+        },
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "properties-endpoint-200",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "start"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS",
+        "env": {
+          "PORT": "39204"
+        },
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}

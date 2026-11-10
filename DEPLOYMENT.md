@@ -1,6 +1,6 @@
 # Deploying KejaLink (Render + Supabase, free tiers)
 
-The database already lives on Supabase. You only need to host the Node.js server, which also serves the built frontend.
+The database already lives on Supabase. Deploy one Render web service for the Node.js API and built frontend. This keeps login and API requests on the same origin.
 
 ## 1. Put the code on GitHub
 Create a repository and push the `KejaLink-JS` folder. `.gitignore` keeps `node_modules` and `.env` out.
@@ -13,16 +13,17 @@ Create a repository and push the `KejaLink-JS` folder. `.gitignore` keeps `node_
    - **Start command:** `npm start`
    - **Health check path:** `/api/health`
    - **Instance type:** Free
-3. **Environment variables:** copy everything from `backend/.env.example` and fill in real values. In particular:
+3. **Environment variables:** use `backend/.env.example` as a reference and set the required values in Render. In particular:
    - `NODE_ENV=production`
    - `DATABASE_URL` = the Supabase **Session pooler** URI
    - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (needed: Render's disk is wiped on every deploy, so photos must go to Supabase Storage)
    - `JWT_SECRET`, `APP_KEY` (two different random values)
-   - `FRONTEND_URL` = the separately hosted frontend's exact origin (`https://kejalink-1-ft8q.onrender.com`, no trailing slash). Leave it unset only when the frontend and API use the same origin.
-4. If the frontend is a separate Render service, set its build environment variable `API_BASE_URL` to the backend origin (`https://kejalink-ipe1.onrender.com`, no trailing slash), then redeploy it. This makes API requests, downloads, and local `/uploads/` images use the backend service. The default empty value keeps same-origin deployments working.
-5. Deploy. Open `https://<your-app>.onrender.com/api/health` and check it says **"database": "connected"**.
+   - Leave `FRONTEND_URL` unset for this single-service, same-origin deployment.
+4. Deploy. Open `https://<your-app>.onrender.com/api/health` and check it says **"database": "connected"**. Open the same service's root URL and `/login`; both should serve the app.
 
-The repository includes a [`render.yaml`](./render.yaml) Blueprint with the root directory and build/start commands. If a running service shows `Cannot GET /` while `/api/health` works, its deployment is serving the API without the built frontend. Update that service to use the settings above (or create/sync it as a Blueprint), then trigger a new deploy and confirm the build log runs `npm run build` successfully.
+The repository includes a [`render.yaml`](./render.yaml) Blueprint with the root directory and build/start commands. If `/api/health` works but `/login` returns 404, the running service is stale or its build did not produce `frontend/dist`. Sync the Blueprint or update the service to use the settings above, trigger a new deploy, and confirm the build log runs `npm run build` successfully.
+
+If you intentionally host the frontend on a separate static site, configure a Render rewrite from `/*` to `/index.html` so direct routes such as `/login` work. Set the frontend build variable `API_BASE_URL` to the backend origin and set backend `FRONTEND_URL` to the frontend's exact origin (no trailing slash), then redeploy both services. Do not put database credentials in frontend build variables.
 
 The free tier sleeps after 15 minutes without visitors; the first request after that takes about 30 seconds. Open the site a minute before presenting.
 

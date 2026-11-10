@@ -1,0 +1,76 @@
+{
+  "projectType": "webapp",
+  "setup": [],
+  "assertions": [
+    {
+      "name": "frontend-production-build",
+      "kind": "process",
+      "command": "npm",
+      "args": ["--prefix", "frontend", "run", "build"],
+      "verificationMethod": "exit-code",
+      "expected": "0",
+      "timeoutSeconds": 300
+    },
+    {
+      "name": "tests-pass",
+      "kind": "process",
+      "command": "npm",
+      "args": ["--prefix", "backend", "test"],
+      "verificationMethod": "test-results",
+      "expected": "0",
+      "timeoutSeconds": 120
+    },
+    {
+      "name": "health-endpoint-200",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": ["start"],
+      "env": {
+        "PORT": "39201"
+      },
+      "url": "http://127.0.0.1:39201/api/health",
+      "verificationMethod": "http-status",
+      "expected": "200",
+      "timeoutSeconds": 90
+    },
+    {
+      "name": "login-route-serves-app",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": ["start"],
+      "env": {
+        "PORT": "39202"
+      },
+      "url": "http://127.0.0.1:39202/login",
+      "verificationMethod": "http-status",
+      "expected": "200",
+      "timeoutSeconds": 90
+    },
+    {
+      "name": "openapi-document-200",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": ["start"],
+      "env": {
+        "PORT": "39203"
+      },
+      "url": "http://127.0.0.1:39203/api-docs.json",
+      "verificationMethod": "http-status",
+      "expected": "200",
+      "timeoutSeconds": 90
+    },
+    {
+      "name": "properties-endpoint-200",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": ["start"],
+      "env": {
+        "PORT": "39204"
+      },
+      "url": "http://127.0.0.1:39204/api/properties",
+      "verificationMethod": "http-status",
+      "expected": "200",
+      "timeoutSeconds": 90
+    }
+  ]
+}
