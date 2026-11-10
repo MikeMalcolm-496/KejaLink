@@ -10,6 +10,7 @@ const env = (key, fallback) => (process.env[key] !== undefined && process.env[ke
 const config = {
   port: Number(env('PORT', 5000)),
   isProduction: env('NODE_ENV', 'development') === 'production',
+  frontendUrl: env('FRONTEND_URL', ''),
   company: env('COMPANY_NAME', 'KejaLink Realty Solutions Ltd'),
   demoMode: env('DEMO_MODE', 'true') === 'true',              // shows demo accounts on the login page
 

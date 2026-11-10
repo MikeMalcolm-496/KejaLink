@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const config = require('./config/env');
 const { pool } = require('./config/db');
 const { securityHeaders, csrfGuard } = require('./middleware/security');
@@ -16,6 +17,10 @@ const app = express();
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
+app.use(cors({
+  origin: config.frontendUrl || false,
+  credentials: true,
+}));
 app.use(securityHeaders);
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
@@ -64,8 +69,5 @@ app.listen(port, '0.0.0.0', () => {
     .catch((err) => console.error('DATABASE CONNECTION FAILED:', err.message));
 
 });
-
-const cors = require('cors'); // npm install cors
-app.use(cors());
 
 module.exports = app;

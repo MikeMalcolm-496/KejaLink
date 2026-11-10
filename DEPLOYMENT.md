@@ -18,6 +18,7 @@ Create a repository and push the `KejaLink-JS` folder. `.gitignore` keeps `node_
    - `DATABASE_URL` = the Supabase **Session pooler** URI
    - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (needed: Render's disk is wiped on every deploy, so photos must go to Supabase Storage)
    - `JWT_SECRET`, `APP_KEY` (two different random values)
+   - `FRONTEND_URL` = the frontend's exact public origin (scheme and host only, no trailing slash), if it is hosted separately. The current deployment serves the frontend and API from the same origin, so CORS is not needed for that setup.
 4. Deploy. Open `https://<your-app>.onrender.com/api/health` and check it says **"database": "connected"**.
 
 The repository includes a [`render.yaml`](./render.yaml) Blueprint with the root directory and build/start commands. If a running service shows `Cannot GET /` while `/api/health` works, its deployment is serving the API without the built frontend. Update that service to use the settings above (or create/sync it as a Blueprint), then trigger a new deploy and confirm the build log runs `npm run build` successfully.
