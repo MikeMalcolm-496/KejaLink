@@ -6,11 +6,12 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
 
 const env = (key, fallback) => (process.env[key] !== undefined && process.env[key] !== '' ? process.env[key] : fallback);
+const isProduction = env('NODE_ENV', 'development') === 'production';
 
 const config = {
   port: Number(env('PORT', 5000)),
-  isProduction: env('NODE_ENV', 'development') === 'production',
-  frontendUrl: env('FRONTEND_URL', ''),
+  isProduction,
+  frontendUrl: env('FRONTEND_URL', isProduction ? 'https://kejalink-1-ft8q.onrender.com' : ''),
   company: env('COMPANY_NAME', 'KejaLink Realty Solutions Ltd'),
   demoMode: env('DEMO_MODE', 'true') === 'true',              // shows demo accounts on the login page
 
