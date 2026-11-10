@@ -9,5 +9,10 @@
     "start": "npm --prefix backend start",
     "test:e2e": "node tests/e2e.test.js"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.6"
+  }
 }
