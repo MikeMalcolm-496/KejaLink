@@ -48,7 +48,10 @@ module.exports = (env, argv) => {
     devServer: {
       port: 3000,
       historyApiFallback: true,                       // serve the page shell for frontend routes
-      proxy: [{ context: ['/api', '/uploads'], target: 'http://localhost:5000' }],
+      proxy: [{
+        context: ['/api', '/uploads', '/swagger', '/swagger.html', '/swagger-ui-assets'],
+        target: 'http://localhost:5000',
+      }],
       static: { directory: path.join(__dirname, 'public') },
     },
     performance: { hints: false },

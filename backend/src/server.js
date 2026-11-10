@@ -9,6 +9,8 @@ const { securityHeaders, csrfGuard } = require('./middleware/security');
 const { loadUser } = require('./middleware/auth');
 const { notFound, errorHandler, asyncHandler } = require('./middleware/errors');
 const { UPLOAD_DIR } = require('./utils/storage');
+const openApiSpec = require('./docs/openapi');
+const swaggerAssetsDir = path.dirname(require.resolve('swagger-ui-dist/swagger-ui-bundle.js'));
 
 const app = express();
 app.set('trust proxy', 1);
@@ -17,6 +19,11 @@ app.disable('x-powered-by');
 app.use(securityHeaders);
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
+
+app.get('/api-docs.json', (req, res) => res.json(openApiSpec));
+app.use('/swagger-ui-assets', express.static(swaggerAssetsDir, { maxAge: '1d' }));
+app.get('/swagger', (req, res) => res.redirect('/swagger.html'));
+app.get('/swagger.html', (req, res) => res.sendFile(path.join(__dirname, '..', 'swagger.html')));
 
 app.use('/api', loadUser, csrfGuard);
 app.get('/api/health', asyncHandler(async (req, res) => {
