@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import ListingCard from '../components/ListingCard';
-import { Loading } from '../components/ui';
+import { Loading, LoadError } from '../components/ui';
 import useApi from '../hooks/useApi';
 import useTitle from '../hooks/useTitle';
+import { toArray } from '../utils/normalizeList';
 
 /** Decorative Nairobi skyline for the hero. */
 function Skyline() {
@@ -29,6 +30,8 @@ export default function Home() {
   const listings = useApi('/properties', { per_page: 6 });
   const stats = useApi('/properties/stats');
   const locations = useApi('/properties/locations');
+  const listingItems = toArray(listings.data);
+  const locationItems = toArray(locations.data);
 
   const search = (e) => {
     e.preventDefault();
@@ -47,7 +50,7 @@ export default function Home() {
           <div className="hs-field">
             <label htmlFor="h-loc">Where</label>
             <input id="h-loc" list="h-locs" placeholder="Kilimani, Westlands…" value={q.location} onChange={(e) => setQ({ ...q, location: e.target.value })} />
-            <datalist id="h-locs">{(locations.data || []).map((l) => <option key={l} value={l} />)}</datalist>
+            <datalist id="h-locs">{locationItems.map((l) => <option key={l} value={l} />)}</datalist>
           </div>
           <div className="hs-field">
             <label htmlFor="h-type">Looking to</label>
@@ -77,8 +80,9 @@ export default function Home() {
           <div><span className="eyebrow">Fresh this week</span><h2>Featured and latest listings</h2></div>
           <Link to="/listings" className="btn btn-ghost">See all listings <Icon name="arrowRight" size={16} /></Link>
         </div>
-        {listings.loading ? <Loading /> : (
-          <div className="listing-grid">{(listings.data ? listings.data.items : []).map((p) => <ListingCard key={p.property_id} p={p} />)}</div>
+        {listings.error && <LoadError error={listings.error} retry={listings.reload} />}
+        {listings.loading && !listings.data ? <Loading /> : (
+          <div className="listing-grid">{listingItems.map((p) => <ListingCard key={p.property_id} p={p} />)}</div>
         )}
       </section>
 

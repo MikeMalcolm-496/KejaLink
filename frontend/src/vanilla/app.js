@@ -1,4 +1,5 @@
 import { api, assetUrl } from '../api/client';
+import { toArray } from '../utils/normalizeList';
 import '../styles/landing.css';
 import './styles.css';
 
@@ -115,11 +116,12 @@ function propertyCard(property) {
 }
 
 function renderProperties(container, properties, emptyText) {
-  if (!properties?.length) {
+  const items = toArray(properties);
+  if (!items.length) {
     container.innerHTML = `<div class="page-message">${escapeHtml(emptyText)}</div>`;
     return;
   }
-  container.innerHTML = properties.map(propertyCard).join('');
+  container.innerHTML = items.map(propertyCard).join('');
 }
 
 async function loadHome() {
@@ -133,8 +135,8 @@ async function loadHome() {
     document.getElementById('stat-listings').textContent = Number(stats.listings).toLocaleString('en-KE');
     document.getElementById('stat-agents').textContent = Number(stats.agents).toLocaleString('en-KE');
     document.getElementById('stat-areas').textContent = Number(stats.areas).toLocaleString('en-KE');
-    document.getElementById('home-locations').innerHTML = locations.map((location) => `<option value="${escapeHtml(location)}"></option>`).join('');
-    renderProperties(listingContainer, listings.items, 'No available listings yet. Please check back soon.');
+    document.getElementById('home-locations').innerHTML = toArray(locations).map((location) => `<option value="${escapeHtml(location)}"></option>`).join('');
+    renderProperties(listingContainer, listings, 'No available listings yet. Please check back soon.');
   } catch (error) {
     showPageError(listingContainer, error, {
       notFoundTitle: "We couldn't find the listings service",
@@ -173,9 +175,9 @@ async function loadListings() {
       api.get('/properties', query),
       api.get('/properties/locations'),
     ]);
-    document.getElementById('filter-locations').innerHTML = locations.map((location) => `<option value="${escapeHtml(location)}"></option>`).join('');
+    document.getElementById('filter-locations').innerHTML = toArray(locations).map((location) => `<option value="${escapeHtml(location)}"></option>`).join('');
     document.getElementById('listing-count').textContent = `${result.total} listing${result.total === 1 ? '' : 's'} found · ${result.ms} ms`;
-    renderProperties(document.getElementById('listing-results'), result.items, 'No listings match your search. Try a nearby area or adjust your filters.');
+    renderProperties(document.getElementById('listing-results'), result, 'No listings match your search. Try a nearby area or adjust your filters.');
     renderPagination(result);
   } catch (error) {
     document.getElementById('listing-count').textContent = 'Listings unavailable';

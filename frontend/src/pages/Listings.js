@@ -10,6 +10,7 @@ import { EmptyState, Loading, LoadError, Pagination } from '../components/ui';
 import useApi from '../hooks/useApi';
 import useTitle from '../hooks/useTitle';
 import { PROPERTY_TYPES, money } from '../utils/format';
+import { toArray } from '../utils/normalizeList';
 import { digitsOnly } from '../utils/validation';
 
 const KEYS = ['location', 'listing_type', 'property_type', 'min_price', 'max_price', 'bedrooms'];
@@ -23,6 +24,8 @@ export default function Listings() {
   const query = { ...current, sort: params.get('sort') || 'newest', page: params.get('page') || 1 };
   const { data, loading, error, reload } = useApi('/properties', query);
   const locations = useApi('/properties/locations');
+  const locationItems = toArray(locations.data);
+  const listingItems = toArray(data);
 
   useEffect(() => setForm(current), [params.toString()]);   // keep the form in sync with the URL
   // Keyboard shortcut: "/" jumps to the location box
@@ -59,7 +62,7 @@ export default function Listings() {
         <div className="search-grid">
           <div className="field"><label htmlFor="location">Location</label>
             <input ref={searchRef} id="location" className="input" list="locs" placeholder="e.g. Kilimani" maxLength={100} value={form.location} onChange={set('location')} />
-            <datalist id="locs">{(locations.data || []).map((l) => <option key={l} value={l} />)}</datalist></div>
+            <datalist id="locs">{locationItems.map((l) => <option key={l} value={l} />)}</datalist></div>
           <div className="field"><label htmlFor="listing_type">Listing type</label>
             <select id="listing_type" className="select" value={form.listing_type} onChange={set('listing_type')}><option value="">Any</option><option value="rent">For rent</option><option value="sale">For sale</option></select></div>
           <div className="field"><label htmlFor="property_type">Property type</label>
@@ -96,10 +99,10 @@ export default function Listings() {
       </div>
 
       {error && <LoadError error={error} retry={reload} />}
-      {loading && !data ? <Loading /> : data && data.items.length === 0 ? (
+      {loading && !data ? <Loading /> : data && listingItems.length === 0 ? (
         <div className="card"><EmptyState icon="home" title="No listings match your search" text="Try a nearby area, a wider price range or fewer filters." action={<button className="btn btn-primary" onClick={() => setParams({})}>Clear all filters</button>} /></div>
       ) : (
-        <div className="listing-grid" style={{ opacity: loading ? 0.5 : 1 }}>{data && data.items.map((p) => <ListingCard key={p.property_id} p={p} />)}</div>
+        <div className="listing-grid" style={{ opacity: loading ? 0.5 : 1 }}>{listingItems.map((p) => <ListingCard key={p.property_id} p={p} />)}</div>
       )}
       {data && <Pagination page={data.page} pages={data.pages} onChange={(p) => apply({ page: String(p) })} />}
     </>

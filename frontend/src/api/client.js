@@ -34,7 +34,15 @@ async function request(method, url, body) {
   } catch {
     throw new ApiError(0, 'Cannot reach the server. Check your internet connection and try again.');
   }
-  const data = await res.json().catch(() => ({}));
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    throw new ApiError(502, 'The API proxy returned a non-JSON response. Check the Render /api/* rewrite before the SPA fallback.');
+  }
+  if (data && data.name === 'KejaLink API' && typeof data.docs === 'string') {
+    throw new ApiError(502, 'The API proxy forwarded this request to the backend root instead of preserving its /api path. Fix the Render /api/* rewrite.');
+  }
   if (!res.ok) {
     const err = new ApiError(res.status, data.error || `Request failed (${res.status}).`, data.fields);
     // Session ended (timeout, suspension): tell the app so it can return to login.
