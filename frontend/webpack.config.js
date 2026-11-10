@@ -1,11 +1,11 @@
 /**
- * webpack.config.js: how the React code is bundled for the browser.
+ * webpack.config.js: bundles the plain-JavaScript public pages and legacy account app.
  *
  *   npm start      development server on http://localhost:3000 with live reload;
  *                  calls to /api and /uploads are forwarded to the Express API on :5000
  *   npm run build  optimised files in /dist, served by the Express server in production
  *
- * Babel turns modern JavaScript + JSX into code every browser understands.
+ * Babel transforms the legacy JSX account routes; the public pages use HTML templates and JavaScript.
  */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -38,12 +38,16 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({ template: './public/index.html', favicon: './public/favicon.svg' }),
-      new CopyWebpackPlugin({ patterns: [{ from: 'public/seed', to: 'seed' }, { from: 'public/logo.svg', to: 'logo.svg' }] }),
+      new CopyWebpackPlugin({ patterns: [
+        { from: 'public/seed', to: 'seed' },
+        { from: 'public/logo.svg', to: 'logo.svg' },
+        { from: 'public/views', to: 'views' },
+      ] }),
       ...(production ? [new MiniCssExtractPlugin({ filename: 'css/[name].[contenthash:8].css' })] : []),
     ],
     devServer: {
       port: 3000,
-      historyApiFallback: true,                       // let React Router handle every URL
+      historyApiFallback: true,                       // serve the page shell for frontend routes
       proxy: [{ context: ['/api', '/uploads'], target: 'http://localhost:5000' }],
       static: { directory: path.join(__dirname, 'public') },
     },

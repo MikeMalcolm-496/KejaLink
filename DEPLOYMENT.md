@@ -1,6 +1,6 @@
 # Deploying KejaLink (Render + Supabase, free tiers)
 
-The database already lives on Supabase. You only need to host the Node.js server, which also serves the built React app.
+The database already lives on Supabase. You only need to host the Node.js server, which also serves the built frontend.
 
 ## 1. Put the code on GitHub
 Create a repository and push the `KejaLink-JS` folder. `.gitignore` keeps `node_modules` and `.env` out.

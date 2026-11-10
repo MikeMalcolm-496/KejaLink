@@ -1,0 +1,67 @@
+<section class="hero" id="home">
+  <div class="hero-copy">
+    <p class="eyebrow">Verified agents · Real listings</p>
+    <h1>Find a home you can <em>actually visit</em> this week.</h1>
+    <p class="hero-text">Search listings from licensed Kenyan agents and book a viewing slot in a few clicks, without the WhatsApp back-and-forth.</p>
+    <form class="search-panel" id="home-search" role="search">
+      <div class="search-field search-lg">
+        <label for="home-location">Where</label>
+        <input id="home-location" name="location" list="home-locations" maxlength="100" placeholder="Kilimani, Westlands…">
+        <datalist id="home-locations"></datalist>
+      </div>
+      <div class="search-field">
+        <label for="home-listing-type">Looking to</label>
+        <select id="home-listing-type" name="listing_type">
+          <option value="">Rent or buy</option>
+          <option value="rent">Rent</option>
+          <option value="sale">Buy</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label for="home-bedrooms">Bedrooms</label>
+        <select id="home-bedrooms" name="bedrooms">
+          <option value="">Any</option>
+          <option value="1">1+</option><option value="2">2+</option><option value="3">3+</option>
+          <option value="4">4+</option><option value="5">5+</option>
+        </select>
+      </div>
+      <button class="primary-btn cta-btn" type="submit">Search homes</button>
+    </form>
+    <ul class="stat-row" aria-label="Platform statistics">
+      <li><strong id="stat-listings">—</strong><span>Available listings</span></li>
+      <li><strong id="stat-agents">—</strong><span>Verified agents</span></li>
+      <li><strong id="stat-areas">—</strong><span>Areas covered</span></li>
+    </ul>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="featured-card">
+      <div class="featured-image"></div>
+      <div class="featured-details">
+        <div><small>Find your next chapter</small><h2>Home starts here</h2></div>
+        <span class="price-pill">Kenya-wide</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="info-strip" aria-label="KejaLink benefits">
+  <div><span>100% verified</span><strong>Licensed agents only</strong></div>
+  <div><span>Fast booking</span><strong>Book viewings in minutes</strong></div>
+  <div><span>Smart search</span><strong>Find homes by budget and lifestyle</strong></div>
+</section>
+
+<section class="listings" aria-labelledby="featured-heading">
+  <div class="section-heading">
+    <div><p class="eyebrow">Fresh this week</p><h2 id="featured-heading">Featured and latest listings</h2></div>
+    <a href="/listings" class="text-link">Browse all listings <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="property-grid" id="featured-listings" aria-live="polite">
+    <p class="page-message" role="status">Loading available homes…</p>
+  </div>
+</section>
+
+<section class="feature-grid" aria-label="How KejaLink works">
+  <article><span class="feature-icon">01</span><h3>Search with confidence</h3><p>Filter by neighborhood, price, bedrooms, and property type to narrow down the right fit.</p></article>
+  <article><span class="feature-icon">02</span><h3>Book a viewing</h3><p>Pick an available date and time to arrange a visit directly with the listing agent.</p></article>
+  <article><span class="feature-icon">03</span><h3>Connect with trusted agents</h3><p>Listings come from licensed agents who understand the local market.</p></article>
+</section>

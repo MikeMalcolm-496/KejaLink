@@ -1,0 +1,26 @@
+<section class="page-heading">
+  <p class="eyebrow">Browse</p>
+  <h1>Find a home or property</h1>
+  <p class="hero-text">Search verified listings from licensed agents.</p>
+</section>
+<form class="search-panel listing-search" id="listing-search" role="search" aria-label="Filter listings">
+  <div class="search-field"><label for="filter-location">Location</label><input id="filter-location" name="location" list="filter-locations" maxlength="100" placeholder="e.g. Kilimani"><datalist id="filter-locations"></datalist></div>
+  <div class="search-field"><label for="filter-type">Listing type</label><select id="filter-type" name="listing_type"><option value="">Any</option><option value="rent">For rent</option><option value="sale">For sale</option></select></div>
+  <div class="search-field"><label for="filter-property">Property type</label><select id="filter-property" name="property_type"><option value="">Any</option><option value="apartment">Apartment</option><option value="house">House</option><option value="land">Land</option><option value="commercial">Commercial</option></select></div>
+  <div class="search-field"><label for="filter-min">Min price (KES)</label><input id="filter-min" name="min_price" inputmode="numeric" pattern="[0-9]*" maxlength="12" placeholder="0"></div>
+  <div class="search-field"><label for="filter-max">Max price (KES)</label><input id="filter-max" name="max_price" inputmode="numeric" pattern="[0-9]*" maxlength="12" placeholder="Any"></div>
+  <div class="search-field"><label for="filter-bedrooms">Bedrooms</label><select id="filter-bedrooms" name="bedrooms"><option value="">Any</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option><option value="5">5+</option></select></div>
+  <button class="primary-btn cta-btn" type="submit">Search listings</button>
+</form>
+<div class="listing-toolbar">
+  <p id="listing-count" role="status">Loading listings…</p>
+  <label for="listing-sort">Sort by</label>
+  <select id="listing-sort" name="sort">
+    <option value="newest">Newest</option>
+    <option value="price_asc">Price: low to high</option>
+    <option value="price_desc">Price: high to low</option>
+    <option value="popular">Most viewed</option>
+  </select>
+</div>
+<div class="property-grid" id="listing-results" aria-live="polite"></div>
+<nav class="pagination" id="listing-pagination" aria-label="Listing pages"></nav>
