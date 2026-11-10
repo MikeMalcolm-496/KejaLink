@@ -27,6 +27,7 @@ app.use(cookieParser());
 
 app.get('/api-docs.json', (req, res) => res.json(openApiSpec));
 app.use('/swagger-ui-assets', express.static(swaggerAssetsDir, { maxAge: '1d' }));
+app.get('/api-docs', (req, res) => res.redirect('/swagger'));
 app.get('/swagger', (req, res) => res.redirect('/swagger.html'));
 app.get('/swagger.html', (req, res) => res.sendFile(path.join(__dirname, '..', 'swagger.html')));
 
@@ -53,9 +54,7 @@ if (hasFrontend) {
   app.use((req, res, next) =>
     req.method === 'GET' ? res.sendFile(path.join(dist, 'index.html')) : next());
 } else {
-  app.get('/', (req, res) => res.status(503).type('text').send(
-    'KejaLink frontend is not built. Deploy from the repository root with "npm run build" before starting the server.',
-  ));
+  app.get('/', (req, res) => res.json({ name: 'KejaLink API', docs: '/api-docs' }));
 }
 
 app.use(errorHandler);
