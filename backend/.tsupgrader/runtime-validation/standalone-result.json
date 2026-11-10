@@ -1,0 +1,135 @@
+{
+  "planHash": "77b39d9890fc6eb053b785edf832b3502f6853dea20f5feb1d302c8a1fc1da0e",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-11-10T13:01:19.2246463Z",
+  "retryCount": 1,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 15614,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E kejalink-backend@1.0.0 test\r\n\u003E node --test --test-reporter=tap test/swagger.test.js\r\n\r\nTAP version 13\r\n# Subtest: OpenAPI document describes the deployed API\r\nok 1 - OpenAPI document describes the deployed API\r\n  ---\r\n  duration_ms: 2.9195\r\n  type: \u0027test\u0027\r\n  ...\r\n# Subtest: Swagger UI loads the OpenAPI document and supports API testing\r\nok 2 - Swagger UI loads the OpenAPI document and supports API testing\r\n  ---\r\n  duration_ms: 1.2644\r\n  type: \u0027test\u0027\r\n  ...\r\n1..2\r\n# tests 2\r\n# suites 0\r\n# pass 2\r\n# fail 0\r\n# cancelled 0\r\n# skipped 0\r\n# todo 0\r\n# duration_ms 183.8798\r\n",
+        "durationMs": 1676,
+        "testResults": {
+          "testFramework": "unknown",
+          "runnerDetectedFrom": "none",
+          "testsTotal": 0,
+          "testsPassed": 0,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": true
+        }
+      },
+      {
+        "name": "swagger-page-loads",
+        "kind": "http-probe",
+        "verificationMethod": "output-contains",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n\u003C!doctype html\u003E\r\n\u003Chtml lang=\u0022en\u0022\u003E\r\n\u003Chead\u003E\r\n  \u003Cmeta charset=\u0022utf-8\u0022\u003E\r\n  \u003Cmeta name=\u0022viewport\u0022 content=\u0022width=device-width, initial-scale=1\u0022\u003E\r\n  \u003Ctitle\u003EKejaLink API documentation\u003C/title\u003E\r\n  \u003Clink rel=\u0022stylesheet\u0022 href=\u0022/swagger-ui-assets/swagger-ui.css\u0022\u003E\r\n  \u003Cstyle\u003E\r\n    body { margin: 0; background: #fafafa; }\r\n    .topbar-custom {\r\n      display: flex; gap: 8px; align-items: center; padding: 12px 20px;\r\n      background: #1b1b1b; color: #fff; font-family: sans-serif;\r\n    }\r\n    .topbar-custom strong { margin-right: 12px; }\r\n    .topbar-custom input {\r\n      flex: 1; min-width: 0; padding: 8px 10px; border-radius: 4px; border: 1px solid #555;\r\n      background: #2b2b2b; color: #fff; font-size: 14px;\r\n    }\r\n    .topbar-custom button {\r\n      padding: 8px 16px; border: 0; border-radius: 4px; cursor: pointer;\r\n      background: #49cc90; color: #000; font-weight: 600;\r\n    }\r\n    #notice { display: none; padding: 10px 20px; background: #fff3cd; color: #664d03;\r\n      font-family: sans-serif; font-size: 14px; }\r\n    @media (max-width: 600px) {\r\n      .topbar-custom { flex-wrap: wrap; }\r\n      .topbar-custom strong { width: 100%; }\r\n    }\r\n  \u003C/style\u003E\r\n\u003C/head\u003E\r\n\u003Cbody\u003E\r\n  \u003Cdiv class=\u0022topbar-custom\u0022\u003E\r\n    \u003Cstrong\u003EKejaLink API\u003C/strong\u003E\r\n    \u003Cinput id=\u0022specUrl\u0022 value=\u0022/api-docs.json\u0022 aria-label=\u0022OpenAPI document URL\u0022\u003E\r\n    \u003Cbutton id=\u0022loadSpec\u0022 type=\u0022button\u0022\u003ELoad\u003C/button\u003E\r\n  \u003C/div\u003E\r\n  \u003Cdiv id=\u0022notice\u0022 role=\u0022alert\u0022\u003E\u003C/div\u003E\r\n  \u003Cdiv id=\u0022swagger-ui\u0022\u003E\u003C/div\u003E\r\n\r\n  \u003Cscript src=\u0022/swagger-ui-assets/swagger-ui-bundle.js\u0022\u003E\u003C/script\u003E\r\n  \u003Cscript\u003E\r\n    const notice = document.getElementById(\u0027notice\u0027);\r\n\r\n    function render(url) {\r\n      window.ui = SwaggerUIBundle({\r\n        url,\r\n        dom_id: \u0027#swagger-ui\u0027,\r\n        deepLinking: true,\r\n        persistAuthorization: true,\r\n        tryItOutEnabled: true,\r\n        requestInterceptor(request) {\r\n          if (![\u0027GET\u0027, \u0027HEAD\u0027, \u0027OPTIONS\u0027].includes(request.method.toUpperCase())) {\r\n            request.headers[\u0027X-KejaLink\u0027] = \u00271\u0027;\r\n          }\r\n          return request;\r\n        },\r\n      });\r\n    }\r\n\r\n    async function loadSpec() {\r\n      const url = document.getElementById(\u0027specUrl\u0027).value.trim();\r\n      if (!url) {\r\n        notice.textContent = \u0027Enter the URL of an OpenAPI document.\u0027;\r\n        notice.style.display = \u0027block\u0027;\r\n        return;\r\n      }\r\n\r\n      try {\r\n        const response = await fetch(url);\r\n        if (!response.ok) throw new Error(\u0060HTTP ${response.status}\u0060);\r\n        const spec = await response.json();\r\n        if (!spec.openapi \u0026\u0026 !spec.swagger) throw new Error(\u0027The response is not an OpenAPI document.\u0027);\r\n        notice.style.display = \u0027none\u0027;\r\n        render(url);\r\n      } catch (error) {\r\n        notice.textContent = \u0060Could not load ${url}: ${error.message}. Make sure the API server is running and the URL points to an OpenAPI document.\u0060;\r\n        notice.style.display = \u0027block\u0027;\r\n      }\r\n    }\r\n\r\n    document.getElementById(\u0027loadSpec\u0027).addEventListener(\u0027click\u0027, loadSpec);\r\n    loadSpec();\r\n  \u003C/script\u003E\r\n\u003C/body\u003E\r\n\u003C/html\u003E\r\n",
+        "durationMs": 24
+      },
+      {
+        "name": "openapi-document-loads",
+        "kind": "http-probe",
+        "verificationMethod": "output-contains",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n{\u0022openapi\u0022:\u00223.0.3\u0022,\u0022info\u0022:{\u0022title\u0022:\u0022KejaLink API\u0022,\u0022version\u0022:\u00221.0.0\u0022,\u0022description\u0022:\u0022REST API for KejaLink property listings and viewing management.\\n\\nInteractive requests use the session cookie from the same browser. Log in through the KejaLink app first to call protected endpoints.\\n\\nThe API requires the X-KejaLink: 1 header for state-changing requests; the documentation page adds it automatically.\u0022},\u0022servers\u0022:[{\u0022url\u0022:\u0022/\u0022,\u0022description\u0022:\u0022This KejaLink server\u0022}],\u0022tags\u0022:[{\u0022name\u0022:\u0022Health\u0022},{\u0022name\u0022:\u0022Authentication\u0022},{\u0022name\u0022:\u0022Properties\u0022},{\u0022name\u0022:\u0022My account\u0022},{\u0022name\u0022:\u0022Agent\u0022},{\u0022name\u0022:\u0022Admin\u0022},{\u0022name\u0022:\u0022Reports\u0022},{\u0022name\u0022:\u0022Payments\u0022}],\u0022paths\u0022:{\u0022/api/health\u0022:{\u0022get\u0022:{\u0022summary\u0022:\u0022Check API and database health\u0022,\u0022tags\u0022:[\u0022Health\u0022],\u0022responses\u0022:{\u0022200\u0022:{\u0022description\u0022:\u0022API and database are available.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022ok\u0022:{\u0022type\u0022:\u0022boolean\u0022},\u0022database\u0022:{\u0022type\u0022:\u0022string\u0022}}}}}},\u0022400\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022401\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022403\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022500\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}}}}},\u0022/api/auth/me\u0022:{\u0022get\u0022:{\u0022summary\u0022:\u0022Get the current session, if signed in\u0022,\u0022tags\u0022:[\u0022Authentication\u0022],\u0022responses\u0022:{\u0022200\u0022:{\u0022description\u0022:\u0022Successful response.\u0022},\u0022400\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022401\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022403\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022500\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}}}}},\u0022/api/auth/register\u0022:{\u0022post\u0022:{\u0022summary\u0022:\u0022Register a client or agent account\u0022,\u0022tags\u0022:[\u0022Authentication\u0022],\u0022responses\u0022:{\u0022201\u0022:{\u0022description\u0022:\u0022Account created.\u0022},\u0022400\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022401\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error message and may include field validation details.\u0022,\u0022content\u0022:{\u0022application/json\u0022:{\u0022schema\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022properties\u0022:{\u0022error\u0022:{\u0022type\u0022:\u0022string\u0022},\u0022fields\u0022:{\u0022type\u0022:\u0022object\u0022,\u0022additionalProperties\u0022:true}}}}}},\u0022403\u0022:{\u0022description\u0022:\u0022Request failed. The response includes an error mes\n\u2026[truncated]",
+        "durationMs": 22
+      },
+      {
+        "name": "swagger-ui-assets-load",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n/*! For license information please see swagger-ui-bundle.js.LICENSE.txt */\n!function webpackUniversalModuleDefinition(s,o){\u0022object\u0022==typeof exports\u0026\u0026\u0022object\u0022==typeof module?module.exports=o():\u0022function\u0022==typeof define\u0026\u0026define.amd?define([],o):\u0022object\u0022==typeof exports?exports.SwaggerUIBundle=o():s.SwaggerUIBundle=o()}(this,(()=\u003E(()=\u003E{var s={67526(s,o){\u0022use strict\u0022;o.byteLength=function byteLength(s){var o=getLens(s),i=o[0],a=o[1];return 3*(i\u002Ba)/4-a},o.toByteArray=function toByteArray(s){var o,i,_=getLens(s),w=_[0],x=_[1],C=new u(function _byteLength(s,o,i){return 3*(o\u002Bi)/4-i}(0,w,x)),j=0,L=x\u003E0?w-4:w;for(i=0;i\u003CL;i\u002B=4)o=a[s.charCodeAt(i)]\u003C\u003C18|a[s.charCodeAt(i\u002B1)]\u003C\u003C12|a[s.charCodeAt(i\u002B2)]\u003C\u003C6|a[s.charCodeAt(i\u002B3)],C[j\u002B\u002B]=o\u003E\u003E16\u0026255,C[j\u002B\u002B]=o\u003E\u003E8\u0026255,C[j\u002B\u002B]=255\u0026o;2===x\u0026\u0026(o=a[s.charCodeAt(i)]\u003C\u003C2|a[s.charCodeAt(i\u002B1)]\u003E\u003E4,C[j\u002B\u002B]=255\u0026o);1===x\u0026\u0026(o=a[s.charCodeAt(i)]\u003C\u003C10|a[s.charCodeAt(i\u002B1)]\u003C\u003C4|a[s.charCodeAt(i\u002B2)]\u003E\u003E2,C[j\u002B\u002B]=o\u003E\u003E8\u0026255,C[j\u002B\u002B]=255\u0026o);return C},o.fromByteArray=function fromByteArray(s){for(var o,a=s.length,u=a%3,_=[],w=16383,x=0,C=a-u;x\u003CC;x\u002B=w)_.push(encodeChunk(s,x,x\u002Bw\u003EC?C:x\u002Bw));1===u?(o=s[a-1],_.push(i[o\u003E\u003E2]\u002Bi[o\u003C\u003C4\u002663]\u002B\u0022==\u0022)):2===u\u0026\u0026(o=(s[a-2]\u003C\u003C8)\u002Bs[a-1],_.push(i[o\u003E\u003E10]\u002Bi[o\u003E\u003E4\u002663]\u002Bi[o\u003C\u003C2\u002663]\u002B\u0022=\u0022));return _.join(\u0022\u0022)};for(var i=[],a=[],u=\u0022undefined\u0022!=typeof Uint8Array?Uint8Array:Array,_=\u0022ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\u002B/\u0022,w=0;w\u003C64;\u002B\u002Bw)i[w]=_[w],a[_.charCodeAt(w)]=w;function getLens(s){var o=s.length;if(o%4\u003E0)throw new Error(\u0022Invalid string. Length must be a multiple of 4\u0022);var i=s.indexOf(\u0022=\u0022);return-1===i\u0026\u0026(i=o),[i,i===o?0:4-i%4]}function encodeChunk(s,o,a){for(var u,_,w=[],x=o;x\u003Ca;x\u002B=3)u=(s[x]\u003C\u003C16\u002616711680)\u002B(s[x\u002B1]\u003C\u003C8\u002665280)\u002B(255\u0026s[x\u002B2]),w.push(i[(_=u)\u003E\u003E18\u002663]\u002Bi[_\u003E\u003E12\u002663]\u002Bi[_\u003E\u003E6\u002663]\u002Bi[63\u0026_]);return w.join(\u0022\u0022)}a[\u0022-\u0022.charCodeAt(0)]=62,a[\u0022_\u0022.charCodeAt(0)]=63},48287(s,o,i){\u0022use strict\u0022;const a=i(67526),u=i(251),_=\u0022function\u0022==typeof Symbol\u0026\u0026\u0022function\u0022==typeof Symbol.for?Symbol.for(\u0022nodejs.util.inspect.custom\u0022):null;o.Buffer=Buffer,o.SlowBuffer=function SlowBuffer(s){\u002Bs!=s\u0026\u0026(s=0);return Buffer.alloc(\u002Bs)},o.INSPECT_MAX_BYTES=50;const w=2147483647;function createBuffer(s){if(s\u003Ew)throw new RangeError(\u0027The value \u0022\u0027\u002Bs\u002B\u0027\u0022 is invalid for option \u0022size\u0022\u0027);const o=new Uint8Array(s);return Object.setPrototypeOf(o,Buffer.prototype),o}function Buffer(s,o,i){if(\u0022number\u0022==typeof s){if(\u0022string\u0022==typeof o)throw new TypeError(\u0027The \u0022string\u0022 argument must be of type string. Received type number\u0027);return allocUnsafe(s)}return from(s,o,i)}function from(s,o,i){if(\u0022string\u0022==typeof s)return function fromString(s,o){\u0022string\u0022==typeof o\u0026\u0026\u0022\u0022!==o||(o=\u0022utf8\u0022);if(!Buffer.isEncoding(o))throw new TypeError(\u0022Unknown encoding: \u0022\u002Bo);const i=0|byteLength(s,o);let a=createBuffer(i);const u=a.write(s,o);u!==i\u0026\u0026(a=a.slice(0,u));return a}(s,o);if(ArrayBuffer.isView(s))return function fromArrayView(s){if(isInstance(s,Uint8Array)){const o=new Uint8Array(s);return fromArrayBuffer(o.buffer,o.byteOffset,o.byteLength)}return fromArrayLike(s)}(s);if(null==s)throw new TypeError(\u0022The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type \u0022\u002Btypeof s);if(isInstance(s,ArrayBuffer)||s\u0026\u0026isInstance(s.buffer,ArrayBuffer))return fromArrayBuffer(s,o,i);if(\u0022undefined\u0022!=typeof SharedArrayBuffer\u0026\u0026(isInstance(s,SharedArrayBuffer)||s\u0026\u0026isInstance(s.buffer,SharedArrayBuffer)))return fromArrayBuffer(s,o,i);if(\u0022number\u0022==typeof s)throw new TypeError(\u0027The \u0022value\u0022 argument must not be of type number. Received type number\u0027);const a=s.valueOf\u0026\u0026s.valueOf();if(null!=a\u0026\u0026a!==s)return Buffer.from(a,o,i);const u=function fromObject(s){if(Buffer.isBuffer(s)){const o=0|checked(s.length),i=createBuffer(o);return 0===i.length||s.copy(i,0,0,o),i}if(void 0!==s.length)return\u0022number\u0022!=typeof s.length||numberIsNaN(s.length)?createBuffer(0):fromArrayLike(s);if(\u0022Buffer\u0022===s.type\u0026\u0026Array.isArray(s.data))return fromArrayLike(s.data)}(s);if(u)return u;if(\u0022undefined\u0022!=typeof Symbol\u0026\u0026null!=Symbol.toPrimitive\u0026\u0026\u0022function\u0022==typeof s[Symbol.toPrimitive])return Buffer.from(s[Symbol.toPrimitive](\u0022string\u0022),o,i);throw new TypeError(\u0022The fir\n\u2026[truncated]",
+        "durationMs": 41
+      }
+    ],
+    "executions": [
+      {
+        "source": "setup[0]",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "ci"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS\\backend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "test"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS\\backend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "swagger-page-loads",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "start"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS\\backend",
+        "env": {
+          "PORT": "39147"
+        },
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "openapi-document-loads",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "start"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS\\backend",
+        "env": {
+          "PORT": "39147"
+        },
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "swagger-ui-assets-load",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "start"
+        ],
+        "cwd": "C:\\Users\\lils0\\OneDrive - Strathmore University\\Documents\\Semester IV\\Software Engineering\\KejaLink-JS\\backend",
+        "env": {
+          "PORT": "39147"
+        },
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}

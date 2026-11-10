@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-11-10T10:35:00Z",
+  "generatedOnPlatform": "win32",
+  "projectType": "server",
+  "setup": [
+    {
+      "command": "npm",
+      "args": ["ci"]
+    }
+  ],
+  "assertions": [
+    {
+      "name": "tests-pass",
+      "kind": "process",
+      "command": "npm",
+      "args": ["test"],
+      "verificationMethod": "test-results",
+      "expected": "0",
+      "timeoutSeconds": 300
+    },
+    {
+      "name": "swagger-page-loads",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": ["start"],
+      "env": {
+        "PORT": "39147"
+      },
+      "url": "http://127.0.0.1:39147/swagger.html",
+      "verificationMethod": "output-contains",
+      "expected": "tryItOutEnabled: true",
+      "timeoutSeconds": 60
+    },
+    {
+      "name": "openapi-document-loads",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": ["start"],
+      "env": {
+        "PORT": "39147"
+      },
+      "url": "http://127.0.0.1:39147/api-docs.json",
+      "verificationMethod": "output-contains",
+      "expected": "\"openapi\"",
+      "timeoutSeconds": 60
+    },
+    {
+      "name": "swagger-ui-assets-load",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": ["start"],
+      "env": {
+        "PORT": "39147"
+      },
+      "url": "http://127.0.0.1:39147/swagger-ui-assets/swagger-ui-bundle.js",
+      "verificationMethod": "http-status",
+      "expected": "200",
+      "timeoutSeconds": 60
+    }
+  ]
+}
