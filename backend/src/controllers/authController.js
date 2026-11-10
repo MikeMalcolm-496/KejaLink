@@ -145,6 +145,7 @@ async function logout(req, res) {
 }
 
 async function me(req, res) {
+  res.set('Cache-Control', 'no-store');
   let unread = 0;
   if (req.user) {
     unread = Number((await queryOne('select count(*) n from notifications where user_id = $1 and not is_read', [req.user.user_id])).n);

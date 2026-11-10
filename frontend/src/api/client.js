@@ -6,8 +6,6 @@
  * - Turns error responses into an ApiError with the message and field errors,
  *   so forms can show them next to the right input.
  */
-const API_BASE_URL = (process.env.API_BASE_URL || '').replace(/\/+$/, '');
-
 export class ApiError extends Error {
   constructor(status, message, fields) {
     super(message);
@@ -16,7 +14,7 @@ export class ApiError extends Error {
   }
 }
 
-export const apiUrl = (path) => `${API_BASE_URL}${path}`;
+export const apiUrl = (path) => path;
 export const assetUrl = (url) => (url && url.startsWith('/uploads/') ? apiUrl(url) : url);
 
 async function request(method, url, body) {
@@ -25,7 +23,7 @@ async function request(method, url, body) {
   try {
     res = await fetch(apiUrl(`/api${url}`), {
       method,
-      credentials: API_BASE_URL ? 'include' : 'same-origin',
+      credentials: 'same-origin',
       headers: {
         Accept: 'application/json',
         ...(method !== 'GET' ? { 'X-KejaLink': '1' } : {}),

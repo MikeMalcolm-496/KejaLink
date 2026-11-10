@@ -47,6 +47,19 @@
       "timeoutSeconds": 90
     },
     {
+      "name": "registration-route-serves-app",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": ["start"],
+      "env": {
+        "PORT": "39205"
+      },
+      "url": "http://127.0.0.1:39205/register",
+      "verificationMethod": "http-status",
+      "expected": "200",
+      "timeoutSeconds": 90
+    },
+    {
       "name": "openapi-document-200",
       "kind": "http-probe",
       "startCommand": "npm",

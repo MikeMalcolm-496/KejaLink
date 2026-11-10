@@ -20,7 +20,7 @@ const SESSION_MINUTES = 30;
 
 const cookieOptions = (minutes) => ({
   httpOnly: true,
-  sameSite: config.frontendUrl && config.isProduction ? 'none' : 'lax',
+  sameSite: 'lax',
   secure: config.isProduction,
   maxAge: minutes * 60 * 1000,
   path: '/',

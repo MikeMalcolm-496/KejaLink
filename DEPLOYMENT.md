@@ -1,6 +1,6 @@
 # Deploying KejaLink (Render + Supabase, free tiers)
 
-The database already lives on Supabase. The Render Blueprint defines a Node.js API service and a static React frontend. The frontend calls the API using `API_BASE_URL`; the API allows the frontend origin using `FRONTEND_URL`.
+The database already lives on Supabase. The Render Blueprint defines a Node.js API service and a static React frontend. The frontend uses same-origin relative `/api` requests; Render proxies those requests to the API service so session cookies remain first-party.
 
 ## 1. Put the code on GitHub
 Create a repository and push the `KejaLink-JS` folder. `.gitignore` keeps `node_modules` and `.env` out.
@@ -18,11 +18,11 @@ Create a repository and push the `KejaLink-JS` folder. `.gitignore` keeps `node_
    - `DATABASE_URL` = the Supabase **Session pooler** URI
    - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (needed: Render's disk is wiped on every deploy, so photos must go to Supabase Storage)
    - `JWT_SECRET`, `APP_KEY` (two different random values)
-   - Set `FRONTEND_URL` to the exact static-site origin, with no trailing slash. The checked-in Blueprint currently uses `https://kejalink-1-ft8q.onrender.com`.
-4. Ensure the static-site service's **Rewrite** rule maps `/*` to `/index.html`; otherwise direct React routes such as `/login` return 404. The Blueprint includes this rule.
-5. Deploy/sync the Blueprint. Open the frontend's root and `/login`; both should load. Open `https://<your-api>.onrender.com/api/health` and confirm `"database": "connected"`. The frontend static service must have `API_BASE_URL` set to the API origin.
+   - Keep `FRONTEND_URL` set to the exact static-site origin, with no trailing slash, for CORS. The checked-in Blueprint currently uses `https://kejalink-1-ft8q.onrender.com`.
+4. On the existing static-site service, remove `API_URL` and `API_BASE_URL` if present. Add a rewrite from `/api/*` to `https://kejalink-ipe1.onrender.com/api/*` before the catch-all rewrite from `/*` to `/index.html`. The Blueprint includes both rules, plus proxy rules for uploads and Swagger.
+5. Deploy/sync the Blueprint and clear the static site's build cache. Open the frontend's root, `/login`, and `/register`; all should load. Confirm `/api/health` on both the frontend origin (proxied) and the backend origin returns `"database": "connected"`. The frontend uses relative API URLs, so it needs no API-origin environment variable.
 
-If the existing Render frontend service is not managed by this Blueprint, apply the rewrite and `API_BASE_URL` in that service's dashboard instead of creating a duplicate. Keep the actual frontend URL in backend `FRONTEND_URL`; these Render environment values are separate from the local `backend/.env` file. Do not put database credentials in frontend build variables.
+If the existing Render frontend service is not managed by this Blueprint, remove `API_URL`/`API_BASE_URL` and add the same ordered proxy and SPA rewrite rules in that service's dashboard instead of creating a duplicate. These Render environment values are separate from the local `backend/.env` file. Do not put database credentials in frontend settings.
 
 The free tier sleeps after 15 minutes without visitors; the first request after that takes about 30 seconds. Open the site a minute before presenting.
 

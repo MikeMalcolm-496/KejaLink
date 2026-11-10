@@ -20,8 +20,26 @@ services:
     staticPublishPath: dist
     routes:
       - type: rewrite
+        source: /api/*
+        destination: https://kejalink-ipe1.onrender.com/api/*
+      - type: rewrite
+        source: /uploads/*
+        destination: https://kejalink-ipe1.onrender.com/uploads/*
+      - type: rewrite
+        source: /api-docs.json
+        destination: https://kejalink-ipe1.onrender.com/api-docs.json
+      - type: rewrite
+        source: /api-docs
+        destination: https://kejalink-ipe1.onrender.com/api-docs
+      - type: rewrite
+        source: /swagger
+        destination: https://kejalink-ipe1.onrender.com/swagger
+      - type: rewrite
+        source: /swagger.html
+        destination: https://kejalink-ipe1.onrender.com/swagger.html
+      - type: rewrite
+        source: /swagger-ui-assets/*
+        destination: https://kejalink-ipe1.onrender.com/swagger-ui-assets/*
+      - type: rewrite
         source: /*
         destination: /index.html
-    envVars:
-      - key: API_BASE_URL
-        value: https://kejalink-ipe1.onrender.com
