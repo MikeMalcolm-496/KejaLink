@@ -8,12 +8,14 @@
  * Babel transforms the legacy JSX account routes; the public pages use HTML templates and JavaScript.
  */
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
   const production = argv.mode === 'production';
+  const apiBaseUrl = (process.env.API_BASE_URL || '').replace(/\/+$/, '');
   return {
     entry: './src/index.js',
     output: {
@@ -37,6 +39,9 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.API_BASE_URL': JSON.stringify(apiBaseUrl),
+      }),
       new HtmlWebpackPlugin({ template: './public/index.html', favicon: './public/favicon.svg' }),
       new CopyWebpackPlugin({ patterns: [
         { from: 'public/seed', to: 'seed' },

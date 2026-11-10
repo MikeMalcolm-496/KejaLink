@@ -1,4 +1,4 @@
-import { api } from '../api/client';
+import { api, assetUrl } from '../api/client';
 import '../styles/landing.css';
 import './styles.css';
 
@@ -17,7 +17,7 @@ const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => 
 }[char]));
 
 const money = (value) => `KES ${Math.round(Number(value || 0)).toLocaleString('en-KE')}`;
-const imageUrl = (value) => value || '/seed/placeholder.svg';
+const imageUrl = (value) => assetUrl(value) || '/seed/placeholder.svg';
 const dateInNairobi = (offset = 0) => {
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Nairobi' }).format(new Date());
   const date = new Date(`${today}T00:00:00Z`);

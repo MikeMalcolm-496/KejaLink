@@ -11,4 +11,4 @@ services:
       - key: NODE_ENV
         value: production
       - key: FRONTEND_URL
-        sync: false
+        value: https://kejalink-1-ft8q.onrender.com

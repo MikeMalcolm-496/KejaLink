@@ -20,7 +20,7 @@ const SESSION_MINUTES = 30;
 
 const cookieOptions = (minutes) => ({
   httpOnly: true,
-  sameSite: 'lax',
+  sameSite: config.frontendUrl && config.isProduction ? 'none' : 'lax',
   secure: config.isProduction,
   maxAge: minutes * 60 * 1000,
   path: '/',
@@ -32,7 +32,7 @@ function startSession(res, userId) {
 }
 
 function endSession(res) {
-  res.clearCookie(SESSION_COOKIE, { path: '/' });
+  res.clearCookie(SESSION_COOKIE, cookieOptions(0));
 }
 
 /** Fetch a user with agent details. */

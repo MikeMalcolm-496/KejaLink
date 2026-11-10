@@ -1,4 +1,6 @@
 /** format.js: how money, dates and statuses are shown everywhere. */
+import { assetUrl } from '../api/client';
+
 const TZ = 'Africa/Nairobi';
 
 export const money = (n) => `KES ${Math.round(Number(n || 0)).toLocaleString('en-KE')}`;
@@ -48,7 +50,7 @@ export function specs(p) {
 
 export const isFeatured = (p) => Boolean(p.featured_until && new Date(p.featured_until) > new Date());
 
-export const coverUrl = (url) => url || '/seed/placeholder.svg';
+export const coverUrl = (url) => assetUrl(url) || '/seed/placeholder.svg';
 
 /** Today in Nairobi as YYYY-MM-DD, plus n days. */
 export function nairobiDate(addDays = 0) {

@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import Icon from '../../components/Icon';
 import { Alert, Field, Input, Loading, SubmitButton, TextArea, useUnsavedWarning } from '../../components/ui';
-import { api } from '../../api/client';
+import { api, assetUrl } from '../../api/client';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
 import useForm from '../../hooks/useForm';
@@ -136,7 +136,7 @@ export default function ListingForm() {
               <div className="photo-grid mb-4">
                 {images.map((img) => (
                   <div key={img.image_id} className={`photo-tile ${cover === img.image_id ? 'cover' : ''} ${remove.includes(img.image_id) ? 'remove' : ''}`}>
-                    <img src={img.image_url} alt="" />
+                    <img src={assetUrl(img.image_url)} alt="" />
                     <div className="opts">
                       <label className="check"><input type="radio" name="cover" checked={cover === img.image_id} onChange={() => setCover(img.image_id)} />Cover</label>
                       <label className="check" style={{ color: 'var(--danger)' }}><input type="checkbox" checked={remove.includes(img.image_id)} onChange={(e) => setRemove((r) => (e.target.checked ? [...r, img.image_id] : r.filter((x) => x !== img.image_id)))} />Delete</label>
