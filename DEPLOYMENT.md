@@ -8,9 +8,10 @@ Create a repository and push the `KejaLink-JS` folder. `.gitignore` keeps `node_
 ## 2. Create a Render web service
 1. Sign in at render.com → **New → Web Service** → connect the repository.
 2. Settings:
-   - **Root directory:** *(leave empty)*
-   - **Build command:** `npm run build`
+   - **Root directory:** repository root (leave empty)
+   - **Build command:** `npm run build` (creates `frontend/dist`, which is ignored by Git and must be generated during deploy)
    - **Start command:** `npm start`
+   - **Health check path:** `/api/health`
    - **Instance type:** Free
 3. **Environment variables:** copy everything from `backend/.env.example` and fill in real values. In particular:
    - `NODE_ENV=production`
@@ -18,6 +19,8 @@ Create a repository and push the `KejaLink-JS` folder. `.gitignore` keeps `node_
    - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (needed: Render's disk is wiped on every deploy, so photos must go to Supabase Storage)
    - `JWT_SECRET`, `APP_KEY` (two different random values)
 4. Deploy. Open `https://<your-app>.onrender.com/api/health` and check it says **"database": "connected"**.
+
+The repository includes a [`render.yaml`](./render.yaml) Blueprint with the root directory and build/start commands. If a running service shows `Cannot GET /` while `/api/health` works, its deployment is serving the API without the built frontend. Update that service to use the settings above (or create/sync it as a Blueprint), then trigger a new deploy and confirm the build log runs `npm run build` successfully.
 
 The free tier sleeps after 15 minutes without visitors; the first request after that takes about 30 seconds. Open the site a minute before presenting.
 

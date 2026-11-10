@@ -47,6 +47,10 @@ if (hasFrontend) {
   app.use(express.static(dist, { maxAge: '1h', index: false }));
   app.use((req, res, next) =>
     req.method === 'GET' ? res.sendFile(path.join(dist, 'index.html')) : next());
+} else {
+  app.get('/', (req, res) => res.status(503).type('text').send(
+    'KejaLink frontend is not built. Deploy from the repository root with "npm run build" before starting the server.',
+  ));
 }
 
 app.use(errorHandler);
