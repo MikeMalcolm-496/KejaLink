@@ -52,8 +52,11 @@ function errorText(error) {
   return error?.message || 'Something went wrong. Please try again.';
 }
 
-function showPageError(container, error) {
-  const heading = error?.status === 404 ? "We couldn't find this listing" : "We couldn't load this page";
+function showPageError(container, error, {
+  notFoundTitle = "We couldn't find this listing",
+  errorTitle = "We couldn't load this page",
+} = {}) {
+  const heading = error?.status === 404 ? notFoundTitle : errorTitle;
   container.innerHTML = `<div class="page-message page-error" role="alert">
     <h2>${heading}</h2>
     <p>${escapeHtml(errorText(error))}</p>
@@ -133,7 +136,10 @@ async function loadHome() {
     document.getElementById('home-locations').innerHTML = locations.map((location) => `<option value="${escapeHtml(location)}"></option>`).join('');
     renderProperties(listingContainer, listings.items, 'No available listings yet. Please check back soon.');
   } catch (error) {
-    showPageError(listingContainer, error);
+    showPageError(listingContainer, error, {
+      notFoundTitle: "We couldn't find the listings service",
+      errorTitle: "We couldn't load listings",
+    });
     ['stat-listings', 'stat-agents', 'stat-areas'].forEach((id) => {
       document.getElementById(id).textContent = '—';
     });
@@ -173,7 +179,10 @@ async function loadListings() {
     renderPagination(result);
   } catch (error) {
     document.getElementById('listing-count').textContent = 'Listings unavailable';
-    showPageError(document.getElementById('listing-results'), error);
+    showPageError(document.getElementById('listing-results'), error, {
+      notFoundTitle: "We couldn't find the listings service",
+      errorTitle: "We couldn't load listings",
+    });
   }
 }
 
