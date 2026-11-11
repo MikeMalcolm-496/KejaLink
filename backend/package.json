@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test --test-reporter=tap test/swagger.test.js test/mpesa.test.js"
+    "test": "node --test --test-reporter=tap test/swagger.test.js test/mpesa.test.js test/storage.test.js"
   },
   "license": "ISC",
   "dependencies": {

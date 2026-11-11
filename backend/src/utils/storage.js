@@ -18,6 +18,15 @@ const { AppError } = require('../middleware/errors');
 
 const UPLOAD_DIR = path.join(__dirname, '..', '..', 'uploads');
 
+function storageHeaders(contentType) {
+  const key = config.supabaseServiceKey;
+  return {
+    apikey: key,
+    ...(key.startsWith('sb_secret_') ? {} : { Authorization: `Bearer ${key}` }),
+    'Content-Type': contentType,
+  };
+}
+
 /** Detect the real image type from the first bytes of the file. */
 function detectImageType(buf) {
   if (buf.length > 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return { ext: 'jpg', mime: 'image/jpeg' };
@@ -37,7 +46,7 @@ async function saveImage(file) {
   if (useSupabase()) {
     const res = await fetch(`${config.supabaseUrl}/storage/v1/object/${config.storageBucket}/${name}`, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${config.supabaseServiceKey}`, 'Content-Type': type.mime },
+      headers: storageHeaders(type.mime),
       body: file.buffer,
     });
     if (!res.ok) throw new Error(`Supabase Storage upload failed: ${res.status} ${await res.text()}`);
@@ -59,7 +68,7 @@ async function deleteImages(urls) {
         const objectPath = url.split(`/public/${config.storageBucket}/`)[1];
         await fetch(`${config.supabaseUrl}/storage/v1/object/${config.storageBucket}`, {
           method: 'DELETE',
-          headers: { Authorization: `Bearer ${config.supabaseServiceKey}`, 'Content-Type': 'application/json' },
+          headers: storageHeaders('application/json'),
           body: JSON.stringify({ prefixes: [objectPath] }),
         });
       }
