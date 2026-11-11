@@ -41,6 +41,12 @@ KejaLink-JS/
 
 You need **Node.js 18 or newer** (nodejs.org) and a free **Supabase** account.
 
+Run the setup helper once from the repository root:
+```bash
+npm run setup
+```
+It installs the locked backend/frontend dependencies and creates `backend/.env` from the example only when that file does not already exist. Fresh local `JWT_SECRET` and `APP_KEY` values are generated without displaying them. It does not create a database or overwrite configuration.
+
 ### 1. Database (Supabase)
 1. Create a project at supabase.com. Save the database password you choose.
 2. Open **SQL Editor > New query**, paste and **Run** each file in `database/`, in order:
@@ -50,10 +56,8 @@ You need **Node.js 18 or newer** (nodejs.org) and a free **Supabase** account.
 ### 2. Backend
 ```bash
 cd backend
-npm install
-cp .env.example .env        # Windows: copy .env.example .env
 ```
-Edit `backend/.env`:
+Edit `backend/.env` (created by `npm run setup`):
 - `DATABASE_URL`: Supabase > **Connect** (top bar) > **Session pooler** URI, with your password filled in.
 - `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`: Supabase > Project Settings > API (for photo uploads). Leave empty to store photos on your computer instead.
 - `JWT_SECRET` and `APP_KEY`: run this twice and paste each result:
@@ -64,10 +68,9 @@ npm start                   # → "Database connected (14 users)."
 ```
 
 ### 3. Frontend
-In a second terminal:
+In a second terminal, start the frontend if you need a separate development server:
 ```bash
 cd frontend
-npm install
 npm start                   # opens on http://localhost:3000 (API calls go to :5000)
 ```
 For the presentation or hosting, run `npm run build` once. The backend then serves the whole site at **http://localhost:5000**.
