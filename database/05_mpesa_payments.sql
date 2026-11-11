@@ -3,6 +3,27 @@
 -- Safe to re-run; historical payment rows and references are preserved.
 begin;
 
+-- Compatibility with legacy databases that still use payer_id instead of agent_id.
+do $$
+begin
+    if exists (
+        select 1
+        from information_schema.columns
+        where table_schema = current_schema()
+          and table_name = 'payments'
+          and column_name = 'payer_id'
+    )
+    and not exists (
+        select 1
+        from information_schema.columns
+        where table_schema = current_schema()
+          and table_name = 'payments'
+          and column_name = 'agent_id'
+    ) then
+        alter table payments rename column payer_id to agent_id;
+    end if;
+end $$;
+
 alter table payments
     add column if not exists phone varchar(15),
     add column if not exists merchant_request_id varchar(60),
