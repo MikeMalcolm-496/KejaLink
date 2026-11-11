@@ -93,7 +93,7 @@ async function buildReport(f, agentId) {
       if (f.status) where.push(`pm.payment_status = ${p(f.status)}`);
       sorts = { date: ['pm.created_at', 'Date'], amount: ['pm.amount', 'Amount'], status: ['pm.payment_status', 'Status'] };
       sql = `select pm.payment_id id, to_char(pm.created_at, 'DD Mon YYYY HH24:MI') paid, a.full_name agent, coalesce(p.title, 'Deleted listing') property,
-               case when pm.payment_method = 'manual' then 'Manual' else 'Legacy' end method,
+               case when pm.payment_method = 'mpesa' then 'M-Pesa' else 'Manual' end method,
                pm.feature_days days, pm.amount, coalesce(pm.payment_reference, '-') reference, pm.payment_status status
              from payments pm join users a on a.user_id = pm.agent_id left join properties p on p.property_id = pm.property_id where {WHERE}`;
       columns = { id: 'ID', paid: 'Date', agent: 'Agent', property: 'Listing', method: 'Method', days: 'Days', amount: 'Amount (KES)', reference: 'Reference', status: 'Status' };

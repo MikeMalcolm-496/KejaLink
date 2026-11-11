@@ -1,4 +1,4 @@
-/** Admin: review manual payments for featured listings. */
+/** Admin: review manual payment references and inspect M-Pesa payments. */
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EmptyState, Loading, StatusBadge } from '../../components/ui';
@@ -24,15 +24,15 @@ export default function Payments() {
   };
   return (
     <>
-      <div className="page-head"><div><h1>Manual payments</h1><p>{data && <>Total received <b>{money(data.totalReceived)}</b> from {data.successful} successful payment(s). </>}<Link to="/admin/reports?type=payments">Payments report</Link></p></div></div>
+      <div className="page-head"><div><h1>Payments</h1><p>{data && <>Total received <b>{money(data.totalReceived)}</b> from {data.successful} successful payment(s). </>}<Link to="/admin/reports?type=payments">Payments report</Link></p></div></div>
       <div className="tabs">{[['', 'All'], ['success', 'Successful'], ['pending', 'Pending'], ['failed', 'Failed'], ['cancelled', 'Cancelled']].map(([k, t]) => <button key={k} className={`tab ${status === k ? 'active' : ''}`} onClick={() => setStatus(k)}>{t}</button>)}</div>
       <div className="card">
         {loading && !data ? <Loading /> : data.items.length === 0 ? <EmptyState icon="card" title="No payments found" /> : (
           <div className="table-wrap"><table className="table">
-            <thead><tr><th>Date</th><th>Agent</th><th>Listing</th><th>Method</th><th className="num">Amount</th><th>Reference</th><th>Status</th><th>Review</th></tr></thead>
+            <thead><tr><th>Date</th><th>Agent</th><th>Listing</th><th>Method</th><th className="num">Amount</th><th>Receipt / ref</th><th>Status</th><th>Review</th></tr></thead>
             <tbody>{data.items.map((r) => (
               <tr key={r.payment_id}><td className="small nowrap">{fmtDateTime(r.created_at)}</td><td>{r.agent}</td><td>{r.title || 'Deleted listing'}<div className="xsmall muted">{r.feature_days} days</div></td>
-                <td>{r.payment_method === 'manual' ? 'Manual' : 'Legacy'}</td>
+                <td>{r.payment_method === 'mpesa' ? 'M-Pesa' : 'Manual'}</td>
                 <td className="num nowrap">{money(r.amount)}</td><td><code>{r.payment_reference || '-'}</code></td>
                 <td><StatusBadge status={r.payment_status} />{r.result_desc && r.payment_status !== 'success' && <div className="xsmall muted">{r.result_desc}</div>}</td>
                 <td>{r.payment_method === 'manual' && r.payment_status === 'pending' && <div className="req-actions">

@@ -305,8 +305,28 @@ module.exports = {
     },
     '/api/payments': {
       get: operation('List agent featured-listing payment requests', 'Payments'),
-      post: operation('Submit a featured-listing payment reference (approved agent session required)', 'Payments', {
-        requestBody: jsonBody({ required: ['property_id', 'package_days', 'reference'], properties: { property_id: { type: 'integer' }, package_days: { type: 'integer', enum: [7, 30] }, reference: { type: 'string' } } }),
+      post: operation('Start an M-Pesa payment or submit a manual payment reference', 'Payments', {
+        description: 'Requires an approved agent session. The method is optional for backwards compatibility and defaults to manual; use mpesa or manual explicitly. M-Pesa requires phone; manual requires reference.',
+        requestBody: jsonBody({
+          required: ['property_id', 'days'],
+          properties: {
+            method: { type: 'string', enum: ['mpesa', 'manual'] },
+            property_id: { type: 'integer' },
+            days: { type: 'integer', enum: [7, 30] },
+            phone: { type: 'string', description: 'Required for M-Pesa; Kenyan mobile number.' },
+            reference: { type: 'string', description: 'Required for manual payment.' },
+          },
+        }),
+      }),
+    },
+    '/api/payments/{id}': {
+      parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer', minimum: 1 } }],
+      get: operation('Check the status of an M-Pesa payment (agent session required)', 'Payments'),
+    },
+    '/api/payments/mpesa-callback': {
+      post: operation('Safaricom STK Push result callback', 'Payments', {
+        description: 'Public callback endpoint for Daraja. Successful callbacks are verified through STK Query before a listing is featured.',
+        requestBody: jsonBody({ properties: { Body: { type: 'object', additionalProperties: true } } }),
       }),
     },
   },

@@ -16,7 +16,7 @@
       "kind": "process",
       "command": "npm",
       "args": ["--prefix", "backend", "test"],
-      "verificationMethod": "test-results",
+      "verificationMethod": "exit-code",
       "expected": "0",
       "timeoutSeconds": 120
     },

@@ -12,6 +12,7 @@ const { notFound, errorHandler, asyncHandler } = require('./middleware/errors');
 const { UPLOAD_DIR } = require('./utils/storage');
 const openApiSpec = require('./docs/openapi');
 const swaggerAssetsDir = path.dirname(require.resolve('swagger-ui-dist/swagger-ui-bundle.js'));
+const paymentsController = require('./controllers/paymentController');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -31,6 +32,7 @@ app.get('/api-docs', (req, res) => res.redirect('/swagger'));
 app.get('/swagger', (req, res) => res.redirect('/swagger.html'));
 app.get('/swagger.html', (req, res) => res.sendFile(path.join(__dirname, '..', 'swagger.html')));
 
+app.post('/api/payments/mpesa-callback', asyncHandler(paymentsController.callback));
 app.use('/api', loadUser, csrfGuard);
 app.get('/api/health', asyncHandler(async (req, res) => {
   await pool.query('select 1');

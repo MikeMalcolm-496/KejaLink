@@ -12,6 +12,8 @@ services:
         value: production
       - key: FRONTEND_URL
         value: https://kejalink-1-ft8q.onrender.com
+      - key: MPESA_ENV
+        value: simulate
   - type: web
     name: kejalink-1-ft8q
     runtime: static

@@ -115,10 +115,17 @@ class Validator {
   }
 }
 
+/** Convert 07XXXXXXXX / +2547XXXXXXXX to 2547XXXXXXXX (the M-Pesa format). */
+function normalizePhone(phone) {
+  let value = String(phone || '').replace(/\D/g, '');
+  if (value.startsWith('0')) value = `254${value.slice(1)}`;
+  return value;
+}
+
 /** Safe positive integer from user input, or a default. */
 function toInt(value, fallback = 0) {
   const n = Number.parseInt(value, 10);
   return Number.isInteger(n) && n >= 0 ? n : fallback;
 }
 
-module.exports = { Validator, toInt, KENYAN_PHONE };
+module.exports = { Validator, normalizePhone, toInt, KENYAN_PHONE };

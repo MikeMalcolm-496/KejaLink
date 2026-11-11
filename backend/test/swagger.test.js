@@ -11,6 +11,8 @@ test('OpenAPI document describes the deployed API', () => {
   assert.ok(openApiSpec.paths['/api/health'].get);
   assert.ok(openApiSpec.paths['/api/auth/login'].post);
   assert.ok(openApiSpec.paths['/api/auth/forgot-password'].post);
+  assert.ok(openApiSpec.paths['/api/payments/{id}'].get);
+  assert.ok(openApiSpec.paths['/api/payments/mpesa-callback'].post);
   assert.ok(openApiSpec.paths['/api/properties'].get);
 });
 

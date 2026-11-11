@@ -28,9 +28,22 @@ const config = {
   // 32 random bytes, base64. Generate: node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
   appKey: env('APP_KEY', ''),
 
+  mpesa: {
+    env: env('MPESA_ENV', 'simulate'),
+    consumerKey: env('MPESA_CONSUMER_KEY', ''),
+    consumerSecret: env('MPESA_CONSUMER_SECRET', ''),
+    shortcode: env('MPESA_SHORTCODE', '174379'),
+    passkey: env('MPESA_PASSKEY', ''),
+    callbackUrl: env('MPESA_CALLBACK_URL', ''),
+  },
+
   loginRateLimit: Number(env('LOGIN_RATE_LIMIT', 20)),     // login attempts per IP per 15 minutes
   featurePackages: { 7: 500, 30: 1500 },                       // days -> price in KES
 };
+
+if (!['simulate', 'sandbox', 'live'].includes(config.mpesa.env)) {
+  throw new Error('MPESA_ENV must be simulate, sandbox, or live.');
+}
 
 if (config.isProduction && (config.jwtSecret.startsWith('dev-only') || !config.appKey)) {
   console.error('Set JWT_SECRET and APP_KEY in .env before running in production.');

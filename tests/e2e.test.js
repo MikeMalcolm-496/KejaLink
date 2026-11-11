@@ -45,7 +45,7 @@ function workday(ahead) {
     return { ctx, page };
   };
   const shot = (page, name, fullPage = true) => page.screenshot({ path: path.join(SHOTS, `${name}.png`), fullPage });
-  const toast = async (page) => { await page.waitForSelector('.toast', { timeout: 8000 }).catch(() => {}); const t = await page.locator('.toast').last().innerText().catch(() => ''); await page.evaluate(() => document.querySelectorAll('.toast .close-btn').forEach((b) => b.click())); return t; };
+  const toast = async (page, timeout = 8000) => { await page.waitForSelector('.toast', { timeout }).catch(() => {}); const t = await page.locator('.toast').last().innerText().catch(() => ''); await page.evaluate(() => document.querySelectorAll('.toast .close-btn').forEach((b) => b.click())); return t; };
   const alertText = async (page) => (await page.locator('.alert').allInnerTexts()).join(' | ');
   const login = async (page, email, pw = 'Password@123') => {
     await page.goto(`${BASE}/login`);
@@ -81,17 +81,6 @@ function workday(ahead) {
   await page.goto(`${BASE}/admin`); await page.waitForTimeout(600);
   check('T11 Guest is sent to login from admin panel', page.url().includes('/login'));
   await shot(page, '05-login', false);
-  await ctx.close();
-
-  // ------------------------------------------------------------ password reset request
-  ({ ctx, page } = await open());
-  await page.goto(`${BASE}/login`);
-  await page.getByRole('link', { name: 'Forgot password?' }).click();
-  await page.fill('#email', `unknown${Date.now()}@example.com`);
-  await page.click('button:has-text("Request password reset")');
-  await page.waitForSelector('.alert');
-  check('Password reset response does not disclose whether an email is registered',
-    (await alertText(page)).includes('If that email is registered'));
   await ctx.close();
 
   // ------------------------------------------------------------ registration
@@ -188,10 +177,13 @@ function workday(ahead) {
     photos: { name: 'evil.jpg', mimeType: 'image/jpeg', buffer: Buffer.from('<?php echo "hacked"; ?>') } } });
   check('T35 Fake image upload rejected by content check', fake.status() === 422 && (await fake.json()).error.includes('not a JPG'));
   await page.waitForSelector('table'); await shot(page, '12-agent-listings');
-  await page.goto(`${BASE}/agent/payments?property_id=3`); await page.waitForSelector('#reference'); await shot(page, '13-agent-manual-payment', false);
+  await page.goto(`${BASE}/agent/payments?property_id=3`); await page.click('button.tab:has-text("Manual reference")'); await page.waitForSelector('#reference'); await shot(page, '13-agent-manual-payment', false);
   await page.fill('#reference', `TESTREF${stamp}`);
   await page.click('button:has-text("Submit for review")');
   check('T36 Agent submits a manual payment for review', (await toast(page)).includes('submitted'));
+  await page.goto(`${BASE}/agent/payments?property_id=3`); await page.waitForSelector('#phone'); await shot(page, '13-agent-mpesa-form', false);
+  await page.click('button:has-text("Pay with M-Pesa")'); await page.waitForSelector('.mpesa-wait'); await shot(page, '14-agent-mpesa-waiting', false);
+  check('T36b Agent completes a simulated M-Pesa payment', (await toast(page, 20000)).includes('Payment received'));
   await page.goto(`${BASE}/agent/reports`); await page.click('button:has-text("Generate report")'); await page.waitForSelector('.table');
   await shot(page, '15-agent-reports');
   check('T37 Agent report shows only own listings', !(await page.locator('.table').innerText()).includes('Karen'));
@@ -217,9 +209,9 @@ function workday(ahead) {
   await page.goto(`${BASE}/admin/payments`); await page.waitForSelector('table');
   const paymentRow = page.locator('tr', { hasText: `TESTREF${stamp}` });
   await paymentRow.locator('button:has-text("Confirm")').click();
-  check('Admin confirms a manual payment', (await toast(page)).includes('Payment confirmed'));
+  check('T36c Admin confirms a manual payment', (await toast(page)).includes('Payment confirmed'));
   await page.waitForFunction((reference) => [...document.querySelectorAll('tr')].some((row) => row.innerText.includes(reference) && row.innerText.includes('Success')), `TESTREF${stamp}`);
-  check('Confirmed payment is marked successful', (await paymentRow.innerText()).includes('Success'));
+  check('T36d Confirmed manual payment is marked successful', (await paymentRow.innerText()).includes('Success'));
   await page.goto(`${BASE}/admin/agents`); await page.waitForSelector('table');
   await page.locator('tr', { hasText: 'Kevin Mwangi' }).locator('button:has-text("Approve")').click();
   await shot(page, '18-confirm-dialog', false);
@@ -291,6 +283,50 @@ function workday(ahead) {
   check('T65 Locked account refuses the right password', (await alertText(page)).includes('Too many failed attempts'));
   await shot(page, '25-lockout', false);
   await ctx.close();
+
+  ({ ctx, page } = await open());
+  await page.goto(`${BASE}/forgot-password`);
+  await page.fill('#email', `unknown${Date.now()}@example.com`);
+  await page.click('button:has-text("Request password reset")');
+  await page.waitForSelector('.alert');
+  check('T66 Unknown address gets a non-enumerating reset response',
+    (await alertText(page)).includes('If that email is registered'));
+  await ctx.close();
+
+  ({ ctx, page } = await open());
+  await page.goto(`${BASE}/forgot-password`);
+  await page.fill('#email', 'mercy.wambui@example.com');
+  await page.click('button:has-text("Request password reset")');
+  await page.waitForSelector('.alert');
+  check('T67 Registered address gets the same reset response',
+    (await alertText(page)).includes('If that email is registered'));
+  await login(page, 'admin@kejalink.co.ke');
+  await page.goto(`${BASE}/account/notifications`);
+  await page.waitForSelector('.timeline li');
+  const resetNotification = page.locator('.timeline li', { hasText: 'Password reset requested by Mercy Wambui' }).first();
+  check('T67b Active reset request notifies administrators', await resetNotification.count() > 0);
+  if (await resetNotification.count()) {
+    await resetNotification.locator('button').click();
+    await page.waitForURL('**/admin/users');
+    await page.fill('#uq', 'Mercy');
+    await page.click('button:has-text("Filter")');
+    await page.waitForTimeout(500);
+    await page.click('button[aria-label="Reset password for Mercy Wambui"]');
+    await page.click('.modal button:has-text("Reset password")');
+    await page.waitForSelector('.temp-password');
+    const recoveryTemp = ((await page.locator('.temp-password').innerText()).match(/Temporary password: (\S+)/) || [])[1];
+    check('T68 Admin reset issues a temporary password', Boolean(recoveryTemp));
+    await page.click('.modal .close-btn');
+    await ctx.close();
+
+    ({ ctx, page } = await open());
+    await login(page, 'mercy.wambui@example.com', recoveryTemp);
+    check('T68b Temporary password requires a change at login', page.url().includes('/change-password'));
+    await ctx.close();
+  } else {
+    await ctx.close();
+  }
+
   ({ ctx, page } = await open());
   await login(page, 'john.kariuki@example.com');
   check('T69 Suspended user cannot log in', (await alertText(page)).includes('suspended'));

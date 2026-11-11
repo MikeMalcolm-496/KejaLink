@@ -10,7 +10,7 @@ Licensed Kenyan agents list properties; clients search, save, ask questions and 
 
 ```
 KejaLink-JS/
-├── database/            SQL for the Supabase SQL Editor (run in order 01 → 02 → 03)
+├── database/            SQL for Supabase; existing deployments also run the numbered migrations
 ├── backend/             Express REST API
 │   ├── src/
 │   │   ├── server.js        app setup: middleware order, routes, serves the built React app
@@ -41,12 +41,6 @@ KejaLink-JS/
 
 You need **Node.js 18 or newer** (nodejs.org) and a free **Supabase** account.
 
-Run the setup helper once from the repository root:
-```bash
-npm run setup
-```
-It installs the locked backend/frontend dependencies and creates `backend/.env` from the example only when that file does not already exist. Fresh local `JWT_SECRET` and `APP_KEY` values are generated without displaying them. It does not create a database or overwrite configuration.
-
 ### 1. Database (Supabase)
 1. Create a project at supabase.com. Save the database password you choose.
 2. Open **SQL Editor > New query**, paste and **Run** each file in `database/`, in order:
@@ -56,8 +50,10 @@ It installs the locked backend/frontend dependencies and creates `backend/.env` 
 ### 2. Backend
 ```bash
 cd backend
+npm install
+cp .env.example .env        # Windows: copy .env.example .env
 ```
-Edit `backend/.env` (created by `npm run setup`):
+Edit `backend/.env`:
 - `DATABASE_URL`: Supabase > **Connect** (top bar) > **Session pooler** URI, with your password filled in.
 - `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`: Supabase > Project Settings > API (for photo uploads). Leave empty to store photos on your computer instead.
 - `JWT_SECRET` and `APP_KEY`: run this twice and paste each result:
@@ -68,9 +64,10 @@ npm start                   # → "Database connected (14 users)."
 ```
 
 ### 3. Frontend
-In a second terminal, start the frontend if you need a separate development server:
+In a second terminal:
 ```bash
 cd frontend
+npm install
 npm start                   # opens on http://localhost:3000 (API calls go to :5000)
 ```
 For the presentation or hosting, run `npm run build` once. The backend then serves the whole site at **http://localhost:5000**.
@@ -98,9 +95,9 @@ The login page has a "Demo accounts" list that fills in the form (turn it off wi
 | Main transaction | Viewing booking: `backend/src/services/viewingService.js` (row lock, business rules, database guard against double booking) |
 | Levels of access | Client, Agent, Admin, Super admin; login, logout, registration, user-requested admin-assisted password reset, forced password change |
 | Reports | 7 reports (admins) / 4 (agents); PDF with company name, logo, date, filters, page numbers; CSV; filters; sorting |
-| Frameworks, libraries, APIs | React, React Router, Express, pg, bcryptjs, jsonwebtoken, multer, pdfkit, qrcode, Supabase Storage |
+| Frameworks, libraries, APIs | React, React Router, Express, pg, bcryptjs, jsonwebtoken, multer, pdfkit, qrcode, Supabase Storage, Safaricom M-Pesa Daraja STK Push/Query |
 | Validation, exceptions, key trapping, recovery | Same rules in browser and server; error middleware with reference codes; transactions with rollback; upload clean-up; key trapping on numeric fields; unsaved-changes warning; double-submit protection |
-| Creativity | Custom design system; live slot picker; admin-reviewed manual featured-listing payments; affordability and mortgage calculators; photo lightbox; drag-and-drop uploads; SVG charts; notifications |
+| Creativity | Custom design system; live slot picker; M-Pesa STK Push with admin-reviewed manual-reference fallback for featured listings; affordability and mortgage calculators; photo lightbox; drag-and-drop uploads; SVG charts; notifications |
 | Security | bcrypt; parameterised SQL; httpOnly SameSite JWT cookie; CSRF header guard; rate limiting; lockout; 2FA (TOTP) with AES-256-GCM-encrypted secrets; file content checks; Row Level Security; security headers |
 | Audit trail | `audit_logs` + Admin > Activity log |
 | Deployment | `DEPLOYMENT.md` (Render + Supabase) |
@@ -109,5 +106,8 @@ The login page has a "Demo accounts" list that fills in the form (turn it off wi
 With the backend serving a fresh build and fresh demo data:
 ```bash
 npm i -g playwright && npx playwright install chromium
-node tests/e2e.test.js
+MPESA_ENV=simulate node tests/e2e.test.js
 ```
+The E2E suite creates and changes database records. Run it only against a disposable database seeded with the demo data. On PowerShell, set `$env:MPESA_ENV='simulate'` before running `node tests/e2e.test.js`.
+
+For an existing database, run `database/05_mpesa_payments.sql` after `database/04_manual_payments.sql` to add M-Pesa fields without deleting payment history. Do not run `database/01_schema.sql` against a database containing data; that schema script drops and recreates the tables.
