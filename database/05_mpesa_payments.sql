@@ -25,7 +25,8 @@ begin
     end if;
 end $$;
 
--- Compatibility with legacy databases that still use payer_id instead of agent_id.
+-- Compatibility with legacy databases that use payer_id, including schemas
+-- where both the legacy and current column exist.
 do $$
 begin
     if exists (
@@ -43,6 +44,22 @@ begin
           and column_name = 'agent_id'
     ) then
         alter table payments rename column payer_id to agent_id;
+    elsif exists (
+        select 1
+        from information_schema.columns
+        where table_schema = current_schema()
+          and table_name = 'payments'
+          and column_name = 'payer_id'
+    )
+    and exists (
+        select 1
+        from information_schema.columns
+        where table_schema = current_schema()
+          and table_name = 'payments'
+          and column_name = 'agent_id'
+    ) then
+        update payments set agent_id = payer_id where agent_id is null;
+        alter table payments alter column payer_id drop not null;
     end if;
 end $$;
 
