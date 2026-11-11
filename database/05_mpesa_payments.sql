@@ -3,6 +3,28 @@
 -- Safe to re-run; historical payment rows and references are preserved.
 begin;
 
+-- Repair legacy tables where payment_id was created without an identity/default.
+do $$
+declare
+    max_payment_id bigint;
+begin
+    if not exists (
+        select 1
+        from information_schema.columns
+        where table_schema = current_schema()
+          and table_name = 'payments'
+          and column_name = 'payment_id'
+          and (is_identity = 'YES' or column_default is not null)
+    ) then
+        create sequence if not exists payments_payment_id_seq;
+        alter sequence payments_payment_id_seq owned by payments.payment_id;
+        select coalesce(max(payment_id), 0) into max_payment_id from payments;
+        perform setval('payments_payment_id_seq', greatest(max_payment_id, 1), max_payment_id > 0);
+        alter table payments
+            alter column payment_id set default nextval('payments_payment_id_seq');
+    end if;
+end $$;
+
 -- Compatibility with legacy databases that still use payer_id instead of agent_id.
 do $$
 begin

@@ -34,6 +34,7 @@ users ─1:1─ agent_profiles ─1:N─ properties ─1:N─ property_images
 2. `02_security_and_storage.sql`: turns on Row Level Security and creates the `property-images` storage bucket.
 3. `03_demo_data.sql` (optional): demo accounts and listings. Every demo password is `Password@123`.
 4. `04_manual_payments.sql` (existing installations only): adds the manual payment fields and stops legacy pending M-Pesa requests from remaining stuck.
+5. `05_mpesa_payments.sql` (existing installations only): adds M-Pesa fields and repairs missing `payment_id` generation.
 
 The initial setup scripts are safe to run again; 01 and 03 wipe KejaLink's data when re-run.
-For an existing database, run only `04_manual_payments.sql` to migrate payments; do not rerun `01_schema.sql` because it recreates tables. The old password-reset table may remain in an existing database but is no longer used.
+For an existing database, run `04_manual_payments.sql` and then `05_mpesa_payments.sql` to migrate payments; do not rerun `01_schema.sql` because it recreates tables. The old password-reset table may remain in an existing database but is no longer used.

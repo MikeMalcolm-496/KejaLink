@@ -30,7 +30,7 @@ The free tier sleeps after 15 minutes without visitors; the first request after 
 ## 3. Payments and account recovery
 Agents can feature a listing with M-Pesa STK Push (Daraja `simulate`, `sandbox`, or `live`) or submit an offline payment reference for administrator review. The M-Pesa callback is exposed on the backend at `/api/payments/mpesa-callback`; successful callback claims are checked against the Daraja STK Query API and expected amount before a listing is featured. The agent page also polls payment status, which can recover a result if the callback is missed while the free-tier service sleeps. Simulation mode never contacts Safaricom or takes real money.
 
-For an existing Supabase database, run `database/05_mpesa_payments.sql` after the existing manual-payment migration. Fresh installations get the M-Pesa columns from `database/01_schema.sql`. Do not rerun `01_schema.sql` on a database with data; it drops and recreates the tables.
+For an existing Supabase database, run `database/05_mpesa_payments.sql` after the existing manual-payment migration. This migration is safe to rerun and repairs a missing `payment_id` generator without changing existing IDs. Fresh installations get the M-Pesa columns and generated payment IDs from `database/01_schema.sql`. Do not rerun `01_schema.sql` on a database with data; it drops and recreates the tables.
 
 Users who forget their password can submit a request from the login page; active-account requests create in-app notifications for administrators, who must verify the requester and securely provide a temporary password. The user must change it at first login. No email service is configured.
 
