@@ -45,7 +45,7 @@ const SECTIONS = [
   ]],
   ['account', 'Your profile', 'user', ['Open the menu under your name, then Profile, to update your name, email and phone. Agents can also edit their agency name and a short bio shown to clients.']],
   ['security', 'Passwords, 2FA and account safety', 'shield', [
-    ['Passwords need 8+ characters with upper-case, lower-case and a number. They are stored as one-way hashes, so nobody can read them.', 'If you forget your password, contact an administrator to reset it. Temporary passwords must be changed at first login.', 'After 5 wrong passwords the account locks for 15 minutes.', 'You are logged out after 30 minutes without activity.', 'Two-factor authentication: menu, then Password & 2FA. Scan the QR code with Google Authenticator and enter the code. From then on each login also asks for a code from your phone.'],
+    ['Passwords need 8+ characters with upper-case, lower-case and a number. They are stored as one-way hashes, so nobody can read them.', 'If you forget your password, choose Forgot password? on the login page. An administrator will be notified in the app and can provide a temporary password after verifying your identity. Change it at first login.', 'After 5 wrong passwords the account locks for 15 minutes.', 'You are logged out after 30 minutes without activity.', 'Two-factor authentication: menu, then Password & 2FA. Scan the QR code with Google Authenticator and enter the code. From then on each login also asks for a code from your phone.'],
   ]],
 ];
 
@@ -54,7 +54,7 @@ const FAQ = [
   ['Why is there no "Book a viewing" button?', 'You need a client account, and the property must be Available. Properties under offer, sold or rented take no new viewings.'],
   ['Why was my time slot rejected?', 'Viewings run Monday to Saturday, 09:00 to 16:00, from tomorrow up to 30 days ahead. Someone may also have just taken it; pick another.'],
   ['I registered as an agent but cannot add listings.', 'An admin must verify your licence first. If it was rejected, the reason shows on your dashboard.'],
-  ['My account is locked.', 'Wait 15 minutes or contact an administrator to reset your password.'],
+  ['I forgot my password or my account is locked.', 'Wait 15 minutes if the account is temporarily locked. Otherwise choose Forgot password? on the login page to notify an administrator.'],
   ['I lost the phone with my authenticator app.', 'Contact an administrator; after confirming your identity they can turn off 2FA.'],
   ['How do I report a fake listing?', 'Open it and click "Report this listing" at the bottom of the right-hand column.'],
 ];

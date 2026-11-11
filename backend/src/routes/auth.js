@@ -10,6 +10,7 @@ const loginLimit = rateLimit({ windowMinutes: 15, max: config.loginRateLimit, me
 router.get('/me', h(c.me));
 router.post('/register', loginLimit, h(c.register));
 router.post('/login', loginLimit, h(c.login));
+router.post('/forgot-password', loginLimit, h(c.forgotPassword));
 router.post('/2fa', loginLimit, h(c.verifyTwoFactor));
 router.post('/logout', h(c.logout));
 router.post('/change-temporary-password', h(c.changeTemporaryPassword));

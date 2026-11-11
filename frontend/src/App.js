@@ -19,6 +19,7 @@ import PropertyDetails from './pages/PropertyDetails';
 import Help from './pages/Help';
 import NotFound from './pages/NotFound';
 import Login from './pages/auth/Login';
+import ForgotPassword from './pages/auth/ForgotPassword';
 import Register from './pages/auth/Register';
 import TwoFactor from './pages/auth/TwoFactor';
 import ChangePassword from './pages/auth/ChangePassword';
@@ -61,6 +62,7 @@ export default function App() {
                 <Route path="/properties/:id" element={<PropertyDetails />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/two-factor" element={<TwoFactor />} />
                 <Route path="/change-password" element={<RequireAuth><ChangePassword /></RequireAuth>} />

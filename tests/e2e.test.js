@@ -83,6 +83,17 @@ function workday(ahead) {
   await shot(page, '05-login', false);
   await ctx.close();
 
+  // ------------------------------------------------------------ password reset request
+  ({ ctx, page } = await open());
+  await page.goto(`${BASE}/login`);
+  await page.getByRole('link', { name: 'Forgot password?' }).click();
+  await page.fill('#email', `unknown${Date.now()}@example.com`);
+  await page.click('button:has-text("Request password reset")');
+  await page.waitForSelector('.alert');
+  check('Password reset response does not disclose whether an email is registered',
+    (await alertText(page)).includes('If that email is registered'));
+  await ctx.close();
+
   // ------------------------------------------------------------ registration
   ({ ctx, page } = await open());
   await page.goto(`${BASE}/register`);

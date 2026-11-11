@@ -113,6 +113,20 @@ module.exports = {
         }),
       }),
     },
+    '/api/auth/forgot-password': {
+      post: operation('Request an administrator-assisted password reset', 'Authentication', {
+        description: 'Returns the same response whether or not the email belongs to an active account. Active accounts trigger an in-app notification to administrators.',
+        requestBody: jsonBody({
+          required: ['email'],
+          properties: { email: { type: 'string', format: 'email' } },
+        }),
+        responses: {
+          200: jsonResponse('If the email is registered, an administrator has been notified.'),
+          422: errorResponse,
+          429: errorResponse,
+        },
+      }),
+    },
     '/api/auth/2fa': {
       post: operation('Complete a two-factor sign-in', 'Authentication', {
         requestBody: jsonBody({ required: ['code'], properties: { code: { type: 'string' } } }),

@@ -10,6 +10,7 @@ test('OpenAPI document describes the deployed API', () => {
   assert.deepEqual(openApiSpec.servers, [{ url: '/', description: 'This KejaLink server' }]);
   assert.ok(openApiSpec.paths['/api/health'].get);
   assert.ok(openApiSpec.paths['/api/auth/login'].post);
+  assert.ok(openApiSpec.paths['/api/auth/forgot-password'].post);
   assert.ok(openApiSpec.paths['/api/properties'].get);
 });
 
@@ -45,5 +46,12 @@ test('registration rejects incomplete input before writing an account', async ()
   await assert.rejects(
     authController.register({ body: {} }, {}),
     (error) => error.status === 422 && error.fields.email === 'Email is required.',
+  );
+});
+
+test('password reset requests validate email before looking up an account', async () => {
+  await assert.rejects(
+    authController.forgotPassword({ body: { email: 'not-an-email' } }, {}),
+    (error) => error.status === 422 && error.fields.email === 'Enter a valid email address, e.g. jane@example.com.',
   );
 });

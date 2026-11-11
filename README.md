@@ -93,7 +93,7 @@ The login page has a "Demo accounts" list that fills in the form (turn it off wi
 | Add / delete / edit / browse / search | Listings, users, viewings, inquiries, favourites; search with 6 filters, sorting, pagination |
 | Help facilities, error messages | `/help` (searchable), "?" button on every panel page, field-level validation, friendly 403/404 and crash pages |
 | Main transaction | Viewing booking: `backend/src/services/viewingService.js` (row lock, business rules, database guard against double booking) |
-| Levels of access | Client, Agent, Admin, Super admin; login, logout, registration, admin-assisted password reset, forced password change |
+| Levels of access | Client, Agent, Admin, Super admin; login, logout, registration, user-requested admin-assisted password reset, forced password change |
 | Reports | 7 reports (admins) / 4 (agents); PDF with company name, logo, date, filters, page numbers; CSV; filters; sorting |
 | Frameworks, libraries, APIs | React, React Router, Express, pg, bcryptjs, jsonwebtoken, multer, pdfkit, qrcode, Supabase Storage |
 | Validation, exceptions, key trapping, recovery | Same rules in browser and server; error middleware with reference codes; transactions with rollback; upload clean-up; key trapping on numeric fields; unsaved-changes warning; double-submit protection |

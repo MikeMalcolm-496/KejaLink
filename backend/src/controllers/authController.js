@@ -167,6 +167,31 @@ async function changeTemporaryPassword(req, res) {
   res.json({ user: publicUser(await findUser(req.user.user_id)) });
 }
 
+// ---------------------------------------------------------------- forgot password
+/** POST /api/auth/forgot-password: asks the administrators to reset this account's password. */
+async function forgotPassword(req, res) {
+  const email = String(req.body.email || '').trim().toLowerCase();
+  const v = new Validator({ email });
+  v.required('email', 'Email').email('email').throwIfFailed();
+
+  const user = await queryOne(
+    "select user_id, full_name from users where email = $1 and account_status = 'active'",
+    [email],
+  );
+  if (user) {
+    await notifyAdmins(
+      { query },
+      `Password reset requested by ${user.full_name} (${email})`,
+      '/admin/users',
+    );
+    await audit(req, 'password_reset_requested', 'user', user.user_id,
+      'User asked an administrator to reset the password', user.user_id);
+  }
+  res.json({
+    message: 'If that email is registered, an administrator has been notified and will contact you.',
+  });
+}
+
 module.exports = {
-  register, login, verifyTwoFactor, logout, me, changeTemporaryPassword,
+  register, login, verifyTwoFactor, logout, me, changeTemporaryPassword, forgotPassword,
 };

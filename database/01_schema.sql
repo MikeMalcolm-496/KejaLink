@@ -238,3 +238,22 @@ create trigger trg_users_updated      before update on users      for each row e
 create trigger trg_properties_updated before update on properties for each row execute function set_updated_at();
 create trigger trg_viewings_updated   before update on viewings   for each row execute function set_updated_at();
 create trigger trg_payments_updated   before update on payments   for each row execute function set_updated_at();
+
+-- 05_mpesa_payments.sql: M-Pesa STK Push support next to manual payments.
+alter table payments
+    add column if not exists phone varchar(15),
+    add column if not exists merchant_request_id varchar(60),
+    add column if not exists checkout_request_id varchar(60);
+
+alter table payments alter column phone drop not null;
+
+create unique index if not exists uq_payments_checkout_request
+    on payments (checkout_request_id) where checkout_request_id is not null;
+
+alter table payments drop constraint if exists payments_payment_method_check;
+alter table payments add constraint payments_payment_method_check
+    check (payment_method in ('manual', 'mpesa'));
+
+alter table payments drop constraint if exists payments_mpesa_needs_phone;
+alter table payments add constraint payments_mpesa_needs_phone
+    check (payment_method <> 'mpesa' or phone is not null) not valid;
