@@ -1,5 +1,5 @@
 /** Agent: feature a listing with M-Pesa or a manual payment reference. */
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Icon from '../../components/Icon';
 import VerificationBanner from '../../components/VerificationBanner';
@@ -11,10 +11,11 @@ import useApi from '../../hooks/useApi';
 import useForm from '../../hooks/useForm';
 import useTitle from '../../hooks/useTitle';
 import { fmtDate, fmtDateTime, isFeatured, money } from '../../utils/format';
-import { PHONE } from '../../utils/validation';
+import { normalizePhone, PHONE } from '../../utils/validation';
 
-function Waiting({ paymentId, amount, phone, onFinished }) {
+function Waiting({ paymentId, amount, phone, onFinished, onTimeout }) {
   const [note, setNote] = useState('Waiting for confirmation…');
+  const [timedOut, setTimedOut] = useState(false);
   const tries = useRef(0);
 
   useEffect(() => {
@@ -32,7 +33,10 @@ function Waiting({ paymentId, amount, phone, onFinished }) {
         // Continue polling through temporary connection errors.
       }
       if (active && tries.current < 40) timer = setTimeout(check, 3000);
-      else if (active) setNote('Still waiting. If you completed the payment, refresh this page in a minute.');
+      else if (active) {
+        setNote('Timed out waiting for confirmation. Your payment may still update; check payment history shortly.');
+        setTimedOut(true);
+      }
     };
     timer = setTimeout(check, 3000);
     return () => {
@@ -48,6 +52,7 @@ function Waiting({ paymentId, amount, phone, onFinished }) {
       <h2 style={{ fontSize: 'var(--text-lg)' }}>Check your phone</h2>
       <p className="muted">Enter your M-Pesa PIN on <b>{phone}</b> to pay <b>{money(amount)}</b>.</p>
       <p className="small muted mb-0">{note}</p>
+      {timedOut && <button type="button" className="ghost-btn" style={{ marginTop: 12 }} onClick={onTimeout}>Return to payment history</button>}
     </div>
   );
 }
@@ -71,9 +76,10 @@ export default function Payments() {
   const pay = (event) => {
     event.preventDefault();
     form.submit(async (values) => {
-      const result = await api.post('/payments', { ...values, method });
+      const phone = method === 'mpesa' ? normalizePhone(values.phone) : values.phone;
+      const result = await api.post('/payments', { ...values, phone, method });
       if (method === 'mpesa') {
-        setWaiting({ id: result.payment_id, amount: data.packages[values.days], phone: values.phone });
+        setWaiting({ id: result.payment_id, amount: data.packages[values.days], phone });
         return;
       }
       toast.success(result.message);
@@ -94,7 +100,7 @@ export default function Payments() {
     });
   };
 
-  const finished = (result) => {
+  const finished = useCallback((result) => {
     setWaiting(null);
     if (result.status === 'success') {
       toast.success(`Payment received${result.receipt ? ` (receipt ${result.receipt})` : ''}. Your listing is now featured.`);
@@ -102,23 +108,28 @@ export default function Payments() {
       toast.error(`Payment ${result.status}: ${result.desc || 'No payment was confirmed.'}`);
     }
     reload();
-  };
+  }, [reload, toast]);
+
+  const paymentTimedOut = useCallback(() => {
+    setWaiting(null);
+    reload();
+  }, [reload]);
 
   if (loading && !data) return <Loading />;
   return (
     <>
       <div className="page-head"><div><h1>Feature a listing</h1><p>Featured listings appear first in every search, with a star badge.</p></div></div>
       <VerificationBanner user={user} />
-      {data.simulated && (
-        <Alert type="info">
-          <b>Demo mode:</b> M-Pesa is simulated, so no real money moves. It completes about 5 seconds after the request.
-          Use <code>0700000000</code> to simulate cancellation.
-        </Alert>
-      )}
       <div className="grid-2">
         <div className="card">
           {waiting ? (
-            <Waiting paymentId={waiting.id} amount={waiting.amount} phone={waiting.phone} onFinished={finished} />
+            <Waiting
+              paymentId={waiting.id}
+              amount={waiting.amount}
+              phone={waiting.phone}
+              onFinished={finished}
+              onTimeout={paymentTimedOut}
+            />
           ) : (
             <form onSubmit={pay} noValidate>
               <div className="tabs mb-4">

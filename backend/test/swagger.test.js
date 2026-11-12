@@ -16,6 +16,11 @@ test('OpenAPI document describes the deployed API', () => {
   assert.ok(openApiSpec.paths['/api/properties'].get);
 });
 
+test('agent payment status route is registered', () => {
+  const paymentsRouter = require('../src/routes/payments');
+  assert.ok(paymentsRouter.stack.some((layer) => layer.route?.path === '/:id' && layer.route.methods.get));
+});
+
 test('Swagger UI loads the OpenAPI document and supports API testing', () => {
   const swaggerHtml = fs.readFileSync(path.join(__dirname, '..', 'swagger.html'), 'utf8');
 

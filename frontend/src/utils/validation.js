@@ -5,6 +5,11 @@
 export const PHONE = /^(\+?254|0)(7|1)\d{8}$/;
 export const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+export function normalizePhone(phone) {
+  const digits = String(phone || '').replace(/\D/g, '');
+  return digits.startsWith('0') ? `254${digits.slice(1)}` : digits;
+}
+
 export function passwordProblem(pw) {
   if (!pw) return 'Password is required.';
   if (pw.length < 8 || !/[A-Z]/.test(pw) || !/[a-z]/.test(pw) || !/\d/.test(pw)) {

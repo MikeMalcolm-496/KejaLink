@@ -6,6 +6,7 @@ const c = require('../controllers/paymentController');
 
 router.use(requireLogin('agent'));
 router.get('/', h(c.overview));
+router.get('/:id', h(c.status));
 router.post('/', requireApprovedAgent, h(c.start));
 
 module.exports = router;
