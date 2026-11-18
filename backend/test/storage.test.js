@@ -29,7 +29,7 @@ test('Supabase secret key is sent as the API key for uploads and deletes', async
     assert.equal(requests.length, 2);
     for (const { options } of requests) {
       assert.equal(options.headers.apikey, 'sb_secret_test-key');
-      assert.equal(options.headers.Authorization, undefined);
+      assert.equal(options.headers.Authorization, 'Bearer sb_secret_test-key');
     }
     assert.equal(requests[0].options.method, 'POST');
     assert.equal(requests[1].options.method, 'DELETE');
